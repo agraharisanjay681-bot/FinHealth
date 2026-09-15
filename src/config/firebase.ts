@@ -1,6 +1,14 @@
 import { initializeApp, getApps, getApp } from 'firebase/app';
 import { getAnalytics, isSupported, Analytics } from 'firebase/analytics';
-import { getAuth, GoogleAuthProvider, Auth } from 'firebase/auth';
+import { 
+  getAuth, 
+  GoogleAuthProvider, 
+  GithubAuthProvider, 
+  signInWithPopup, 
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  Auth 
+} from 'firebase/auth';
 
 // Your web app's Firebase configuration
 export const firebaseConfig = {
@@ -19,6 +27,15 @@ export const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getA
 // Initialize Firebase Auth
 export const auth: Auth = getAuth(app);
 export const googleProvider = new GoogleAuthProvider();
+export const githubProvider = new GithubAuthProvider();
+
+export async function loginWithFirebaseGoogle() {
+  return await signInWithPopup(auth, googleProvider);
+}
+
+export async function loginWithFirebaseGithub() {
+  return await signInWithPopup(auth, githubProvider);
+}
 
 // Initialize Firebase Analytics safely (client-side only)
 export let analytics: Analytics | null = null;

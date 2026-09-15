@@ -5,6 +5,7 @@ import { useAuth } from '../context/AuthContext.js';
 import { OAuthModal } from '../components/auth/OAuthModal.js';
 import { DisclaimerBanner } from '../components/common/DisclaimerBanner.js';
 import { Logo } from '../components/common/Logo.js';
+import { SocialAuthButtons } from '../components/auth/SocialAuthButtons.js';
 
 export const RegisterPage: React.FC = () => {
   const { register } = useAuth();
@@ -174,49 +175,21 @@ export const RegisterPage: React.FC = () => {
             </button>
           </form>
 
-          {/* Social Logins */}
-          <div className="space-y-3">
+          {/* Social Sign-Up Providers */}
+          <div className="space-y-3 pt-2">
             <div className="relative flex items-center justify-center">
               <div className="border-t border-slate-200 dark:border-slate-800 w-full" />
-              <span className="bg-white dark:bg-slate-900 px-3 text-[11px] text-slate-400 uppercase tracking-wider font-semibold absolute">
+              <span className="bg-white dark:bg-slate-900 px-3 text-[10px] text-slate-400 uppercase tracking-wider font-semibold absolute">
                 Or Sign Up With
               </span>
             </div>
 
-            <div className="grid grid-cols-3 gap-2.5 pt-2">
-              <button
-                type="button"
-                onClick={() => {
-                  setSelectedOAuthProvider('google');
-                  setIsOAuthModalOpen(true);
-                }}
-                className="py-2.5 px-3 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-slate-300 bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-200 text-xs font-semibold flex items-center justify-center gap-1.5"
-              >
-                <span>Google</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => {
-                  setSelectedOAuthProvider('github');
-                  setIsOAuthModalOpen(true);
-                }}
-                className="py-2.5 px-3 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-slate-300 bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-200 text-xs font-semibold flex items-center justify-center gap-1.5"
-              >
-                <span>GitHub</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => {
-                  setSelectedOAuthProvider('linkedin');
-                  setIsOAuthModalOpen(true);
-                }}
-                className="py-2.5 px-3 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-slate-300 bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-200 text-xs font-semibold flex items-center justify-center gap-1.5"
-              >
-                <span>LinkedIn</span>
-              </button>
-            </div>
+            <SocialAuthButtons
+              mode="signup"
+              layout="stacked"
+              onSuccess={() => navigate('/onboarding')}
+              onError={(msg) => setError(msg)}
+            />
           </div>
 
           <div className="text-center pt-2 text-xs text-slate-500 dark:text-slate-400">

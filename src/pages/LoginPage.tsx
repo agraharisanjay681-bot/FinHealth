@@ -5,6 +5,7 @@ import { useAuth } from '../context/AuthContext.js';
 import { OAuthModal } from '../components/auth/OAuthModal.js';
 import { DisclaimerBanner } from '../components/common/DisclaimerBanner.js';
 import { Logo } from '../components/common/Logo.js';
+import { SocialAuthButtons } from '../components/auth/SocialAuthButtons.js';
 
 export const LoginPage: React.FC = () => {
   const { login, demoLogin } = useAuth();
@@ -83,14 +84,31 @@ export const LoginPage: React.FC = () => {
         </div>
 
         {/* Main Card */}
-        <div className="p-6 sm:p-8 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl space-y-6">
+        <div className="p-6 sm:p-8 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl space-y-5">
           {error && (
             <div className="p-3 text-xs rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800 text-rose-700 dark:text-rose-300">
               {error}
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-4">
+          {/* Social Sign-In Providers (Google & GitHub) */}
+          <div className="space-y-3">
+            <SocialAuthButtons
+              mode="signin"
+              layout="stacked"
+              onSuccess={() => navigate('/dashboard')}
+              onError={(msg) => setError(msg)}
+            />
+
+            <div className="relative flex items-center justify-center pt-2">
+              <div className="border-t border-slate-200 dark:border-slate-800 w-full" />
+              <span className="bg-white dark:bg-slate-900 px-3 text-[10px] text-slate-400 uppercase tracking-wider font-semibold absolute">
+                Or Continue With Email
+              </span>
+            </div>
+          </div>
+
+          <form onSubmit={handleSubmit} className="space-y-4 pt-1">
             <div>
               <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
                 Email Address
@@ -147,46 +165,10 @@ export const LoginPage: React.FC = () => {
               disabled={isLoading}
               className="w-full py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs shadow-md shadow-emerald-600/20 hover:shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50"
             >
-              <span>{isLoading ? 'Authenticating...' : 'Sign In to FinHealth'}</span>
+              <span>{isLoading ? 'Authenticating...' : 'Sign In with Email'}</span>
               <ArrowRight className="w-4 h-4" />
             </button>
           </form>
-
-          {/* Social Logins */}
-          <div className="space-y-3">
-            <div className="relative flex items-center justify-center">
-              <div className="border-t border-slate-200 dark:border-slate-800 w-full" />
-              <span className="bg-white dark:bg-slate-900 px-3 text-[11px] text-slate-400 uppercase tracking-wider font-semibold absolute">
-                Or Continue With
-              </span>
-            </div>
-
-            <div className="grid grid-cols-3 gap-2.5 pt-2">
-              <button
-                type="button"
-                onClick={() => openOAuth('google')}
-                className="py-2.5 px-3 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-200 text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors"
-              >
-                <span>Google</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => openOAuth('github')}
-                className="py-2.5 px-3 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-200 text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors"
-              >
-                <span>GitHub</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => openOAuth('linkedin')}
-                className="py-2.5 px-3 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-200 text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors"
-              >
-                <span>LinkedIn</span>
-              </button>
-            </div>
-          </div>
 
           <div className="text-center pt-2 text-xs text-slate-500 dark:text-slate-400">
             Don't have an account?{' '}
