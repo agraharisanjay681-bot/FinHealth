@@ -29,26 +29,23 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const fetchCurrentUser = async () => {
     try {
-      const token = getStoredToken();
-      if (!token) {
+      const storedToken = getStoredToken();
+      if (!storedToken) {
         setIsLoading(false);
         return;
       }
 
       const res = await api.getMe();
-      setUser(res.user);
-      setHasCompletedOnboarding(res.hasCompletedOnboarding);
+      if (res.user) {
+        setUser(res.user);
+        setToken(storedToken);
+        setHasCompletedOnboarding(res.hasCompletedOnboarding ?? true);
 
-      if (res.hasCompletedOnboarding) {
         const profRes = await api.getProfile();
         setProfile(profRes.profile);
       }
     } catch (err) {
-      console.warn('Authentication check failed:', err);
-      clearStoredToken();
-      setToken(null);
-      setUser(null);
-      setProfile(null);
+      console.warn('Session verification fallback:', err);
     } finally {
       setIsLoading(false);
     }
@@ -65,12 +62,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setStoredToken(res.token);
       setToken(res.token);
       setUser(res.user);
-      setHasCompletedOnboarding(res.hasCompletedOnboarding);
+      setHasCompletedOnboarding(res.hasCompletedOnboarding ?? true);
 
-      if (res.hasCompletedOnboarding) {
-        const profRes = await api.getProfile();
-        setProfile(profRes.profile);
-      }
+      const profRes = await api.getProfile();
+      setProfile(profRes.profile);
     } finally {
       setIsLoading(false);
     }
@@ -97,7 +92,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setStoredToken(res.token);
       setToken(res.token);
       setUser(res.user);
-      setHasCompletedOnboarding(res.hasCompletedOnboarding);
+      setHasCompletedOnboarding(res.hasCompletedOnboarding ?? true);
 
       const profRes = await api.getProfile();
       setProfile(profRes.profile);
@@ -113,12 +108,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setStoredToken(res.token);
       setToken(res.token);
       setUser(res.user);
-      setHasCompletedOnboarding(res.hasCompletedOnboarding);
+      setHasCompletedOnboarding(res.hasCompletedOnboarding ?? true);
 
-      if (res.hasCompletedOnboarding) {
-        const profRes = await api.getProfile();
-        setProfile(profRes.profile);
-      }
+      const profRes = await api.getProfile();
+      setProfile(profRes.profile);
     } finally {
       setIsLoading(false);
     }
