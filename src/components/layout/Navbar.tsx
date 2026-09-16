@@ -17,7 +17,8 @@ import {
   BarChart3, 
   Bot,
   CheckCircle,
-  Settings
+  Settings,
+  Zap
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext.js';
 import { useTheme } from '../../context/ThemeContext.js';
@@ -27,7 +28,7 @@ import type { Notification } from '../../types/index.js';
 
 export const Navbar: React.FC = () => {
   const { user, isAuthenticated, logout } = useAuth();
-  const { theme, toggleTheme } = useTheme();
+  const { theme, toggleTheme, setTheme } = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -108,15 +109,51 @@ export const Navbar: React.FC = () => {
 
           {/* Right Controls */}
           <div className="flex items-center gap-2.5">
-            {/* Theme Toggle */}
-            <button
-              id="theme-toggle-btn"
-              onClick={toggleTheme}
-              aria-label="Toggle theme"
-              className="p-2 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-            >
-              {theme === 'dark' ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4" />}
-            </button>
+            {/* Theme Switcher Pill */}
+            <div className="flex items-center rounded-full bg-slate-100 dark:bg-slate-800/80 p-0.5 border border-slate-200 dark:border-slate-700/80">
+              <button
+                id="theme-cyber-btn"
+                type="button"
+                onClick={() => setTheme('cyber')}
+                title="Cyber Matrix Holographic Theme"
+                className={`flex items-center gap-1 px-2 py-1 rounded-full text-[10px] font-bold transition-all ${
+                  theme === 'cyber'
+                    ? 'bg-emerald-500 text-slate-950 shadow-xs shadow-emerald-500/50'
+                    : 'text-slate-500 hover:text-emerald-400'
+                }`}
+              >
+                <Zap className="w-3 h-3" />
+                <span className="hidden sm:inline">Cyber</span>
+              </button>
+              
+              <button
+                id="theme-dark-btn"
+                type="button"
+                onClick={() => setTheme('dark')}
+                title="Deep Dark Theme"
+                className={`p-1 rounded-full text-[10px] transition-all ${
+                  theme === 'dark'
+                    ? 'bg-slate-700 text-white shadow-xs'
+                    : 'text-slate-500 hover:text-slate-300'
+                }`}
+              >
+                <Moon className="w-3 h-3" />
+              </button>
+
+              <button
+                id="theme-light-btn"
+                type="button"
+                onClick={() => setTheme('light')}
+                title="Clean Light Theme"
+                className={`p-1 rounded-full text-[10px] transition-all ${
+                  theme === 'light'
+                    ? 'bg-white text-amber-500 shadow-xs'
+                    : 'text-slate-500 hover:text-slate-700'
+                }`}
+              >
+                <Sun className="w-3 h-3" />
+              </button>
+            </div>
 
             {isAuthenticated ? (
               <>

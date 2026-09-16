@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
-type Theme = 'light' | 'dark';
+export type Theme = 'cyber' | 'dark' | 'light';
 
 interface ThemeContextType {
   theme: Theme;
@@ -13,26 +13,37 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [theme, setThemeState] = useState<Theme>(() => {
     const saved = localStorage.getItem('finhealth_theme') as Theme;
-    if (saved === 'dark' || saved === 'light') return saved;
-    return 'light'; // Default to sophisticated light as per guidelines
+    if (saved === 'cyber' || saved === 'dark' || saved === 'light') return saved;
+    return 'cyber'; // Default to the stunning Cyber Emerald FinTech theme
   });
 
   useEffect(() => {
     const root = document.documentElement;
-    if (theme === 'dark') {
+    
+    if (theme === 'cyber') {
+      root.classList.add('dark', 'cyber-theme');
+      root.setAttribute('data-theme', 'cyber');
+      root.style.colorScheme = 'dark';
+    } else if (theme === 'dark') {
       root.classList.add('dark');
+      root.classList.remove('cyber-theme');
       root.setAttribute('data-theme', 'dark');
       root.style.colorScheme = 'dark';
     } else {
-      root.classList.remove('dark');
+      root.classList.remove('dark', 'cyber-theme');
       root.setAttribute('data-theme', 'light');
       root.style.colorScheme = 'light';
     }
+    
     localStorage.setItem('finhealth_theme', theme);
   }, [theme]);
 
   const toggleTheme = () => {
-    setThemeState(prev => (prev === 'light' ? 'dark' : 'light'));
+    setThemeState(prev => {
+      if (prev === 'cyber') return 'light';
+      if (prev === 'light') return 'dark';
+      return 'cyber';
+    });
   };
 
   const setTheme = (newTheme: Theme) => {
@@ -53,3 +64,4 @@ export function useTheme(): ThemeContextType {
   }
   return context;
 }
+

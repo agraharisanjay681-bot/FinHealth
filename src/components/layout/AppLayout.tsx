@@ -4,14 +4,20 @@ import { Navbar } from './Navbar.js';
 import { Footer } from './Footer.js';
 import { FloatingChatButton } from '../chat/FloatingChatButton.js';
 import { DisclaimerBanner } from '../common/DisclaimerBanner.js';
+import { useTheme } from '../../context/ThemeContext.js';
 
 export const AppLayout: React.FC = () => {
+  const { theme } = useTheme();
   const location = useLocation();
   const isLandingOrAuth = ['/', '/login', '/register', '/onboarding'].includes(location.pathname);
   const isFullChat = location.pathname === '/chat';
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-200">
+    <div className={`min-h-screen flex flex-col transition-colors duration-300 ${
+      theme === 'cyber'
+        ? 'cyber-bg-overlay bg-[#030d08] text-slate-100'
+        : 'bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100'
+    }`}>
       <Navbar />
 
       {!isLandingOrAuth && !isFullChat && (
