@@ -24,10 +24,16 @@ export const OnboardingPage: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  React.useEffect(() => {
+    if (user?.name && !formData.name) {
+      setFormData(prev => ({ ...prev, name: user.name }));
+    }
+  }, [user]);
+
   // Form State
   const [formData, setFormData] = useState({
     // Step 1: Personal
-    name: user?.name || 'Alex Sharma',
+    name: user?.name || '',
     age: 28,
     employment: 'salaried',
 

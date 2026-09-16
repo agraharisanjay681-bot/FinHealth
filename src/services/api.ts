@@ -81,7 +81,7 @@ export const api = {
       return res;
     } catch {
       const session = clientStorage.initializeSession({ name: payload.name, email: payload.email }, 'local');
-      return { user: session.user, token: session.token, hasCompletedOnboarding: false };
+      return { user: session.user, token: session.token, hasCompletedOnboarding: session.hasCompletedOnboarding };
     }
   },
 
@@ -95,7 +95,7 @@ export const api = {
       return res;
     } catch {
       const session = clientStorage.initializeSession({ email: payload.email, name: payload.email.split('@')[0] }, 'local');
-      return { user: session.user, token: session.token, hasCompletedOnboarding: true };
+      return { user: session.user, token: session.token, hasCompletedOnboarding: session.hasCompletedOnboarding };
     }
   },
 
@@ -112,7 +112,7 @@ export const api = {
     }
   },
 
-  simulateOAuth: async (provider: string, email?: string, name?: string) => {
+  simulateOAuth: async (provider: string, email?: string, name?: string, avatar?: string) => {
     try {
       const res = await request<{ user: User; token: string; hasCompletedOnboarding: boolean }>('/auth/oauth/simulate', {
         method: 'POST',
@@ -121,8 +121,8 @@ export const api = {
       clientStorage.initializeSession(res.user, provider);
       return res;
     } catch {
-      const session = clientStorage.initializeSession({ email, name }, provider);
-      return { user: session.user, token: session.token, hasCompletedOnboarding: true };
+      const session = clientStorage.initializeSession({ email, name, avatar }, provider);
+      return { user: session.user, token: session.token, hasCompletedOnboarding: session.hasCompletedOnboarding };
     }
   },
 
@@ -144,8 +144,9 @@ export const api = {
       if (res.user) clientStorage.setUser(res.user);
       return res;
     } catch {
-      const user = clientStorage.getUser() || defaultAlexUser;
-      return { user, hasCompletedOnboarding: true };
+      const activeUser = clientStorage.getUser();
+      const hasCompletedOnboarding = clientStorage.isOnboardingDone();
+      return { user: activeUser || defaultAlexUser, hasCompletedOnboarding };
     }
   },
 
@@ -195,22 +196,9 @@ export const api = {
       if (res.profile) clientStorage.setProfile(res.profile);
       return res;
     } catch {
-      const profile = clientStorage.getProfile() || defaultAlexProfile;
-      const updated: FinancialProfile = {
-        ...profile,
-        monthly_income: data.monthly_income || profile.monthly_income,
-        other_income: data.other_income || profile.other_income,
-        monthly_expenses: data.monthly_expenses || profile.monthly_expenses,
-        current_credit_score: data.current_credit_score || profile.current_credit_score,
-        total_credit_limit: data.total_credit_limit || profile.total_credit_limit,
-        credit_card_balance: data.credit_card_balance || profile.credit_card_balance,
-        savings_balance: data.savings_balance || profile.savings_balance,
-        emergency_fund_balance: data.emergency_fund_balance || profile.emergency_fund_balance,
-        financial_health_score: 75,
-        updated_at: new Date().toISOString(),
-      };
-      clientStorage.setProfile(updated);
-      return { profile: updated, message: 'Onboarding completed successfully' };
+      const userId = clientStorage.getActiveUserId();
+      const result = clientStorage.completeUserOnboarding(userId, data);
+      return { profile: result.profile, message: 'Onboarding diagnostic completed successfully' };
     }
   },
 
@@ -231,24 +219,55 @@ export const api = {
       const totalRemaining = activeLoans.reduce((sum, l) => sum + (l.remaining_amount || 0), 0);
       const totalEmi = activeLoans.reduce((sum, l) => sum + (l.emi || 0), 0);
 
+      // Generate dynamic personalized recommendation based on user's actual profile
+      let recTitle = 'Maintain Optimal Credit Utilization & Payment Discipline';
+      let recSummary = `Your credit score is ${profile.current_credit_score} with a ${profile.debt_to_income_ratio}% DTI ratio.`;
+      let actionSteps = [
+        'Pay all recurring bills and card balances before statement generation.',
+        'Automate payments to maintain 100% on-time record.',
+        'Keep revolving credit utilization under 20% to maximize bureau scoring.'
+      ];
+
+      if (profile.credit_utilization_ratio > 30) {
+        recTitle = 'Prioritize Lowering Revolving Credit Utilization Under 20%';
+        recSummary = `Your utilization stands at ${profile.credit_utilization_ratio}%. High utilization significantly weighs down CIBIL scores.`;
+        actionSteps = [
+          `Pay down ₹${Math.round(profile.credit_card_balance * 0.4).toLocaleString('en-IN')} across cards immediately.`,
+          'Request a credit limit increase without increasing spending.',
+          'Split card payments into twice-monthly intervals.'
+        ];
+      } else if (profile.debt_to_income_ratio > 40) {
+        recTitle = 'Accelerate Principal Debt Repayment to Reduce DTI';
+        recSummary = `Your monthly EMI of ₹${profile.monthly_emi.toLocaleString('en-IN')} represents ${profile.debt_to_income_ratio}% of income.`;
+        actionSteps = [
+          'Target extra prepayments on highest interest personal loans.',
+          'Avoid taking additional consumer credit or personal loans.',
+          'Consolidate multiple high-interest obligations.'
+        ];
+      }
+
       const latestRec: AIRecommendation = {
-        id: 'rec_live',
+        id: `rec_${user.id}`,
         user_id: user.id,
-        summary: `Your current utilization is ${profile.credit_utilization_ratio || 28}%. Reducing this under 20% prior to your statement generation date will increase your CIBIL score.`,
-        health_status: 'Healthy',
-        key_issues: ['Revolving credit utilization at 28% threshold', 'Active personal loan EMI compounding'],
+        summary: recSummary,
+        health_status: profile.financial_health_score >= 80 ? 'Excellent' : profile.financial_health_score >= 70 ? 'Healthy' : profile.financial_health_score >= 50 ? 'Fair' : 'Critical',
+        key_issues: [
+          `Credit Utilization at ${profile.credit_utilization_ratio}%`,
+          `DTI Ratio at ${profile.debt_to_income_ratio}%`,
+          `${loans.length} Active loan account(s)`
+        ],
         recommendations: [
           {
             step: 1,
-            title: 'Lower Credit Card Utilization Under 20%',
-            description: 'Pay down ₹12,000 across active credit cards before statement generation date.',
-            impact: '+15 CIBIL Points',
+            title: recTitle,
+            description: actionSteps[0],
+            impact: '+20 CIBIL Points',
             priority: 'High'
           }
         ],
         priority: 'High',
-        expected_direction: 'Upward credit health projection with lower debt ratio',
-        disclaimer: 'Educational insights generated by FinHealth AI based on self-reported inputs.',
+        expected_direction: 'Upward credit and financial health trajectory',
+        disclaimer: 'Personalized AI analytical recommendations based on self-reported inputs.',
         created_at: new Date().toISOString()
       };
 
@@ -287,15 +306,16 @@ export const api = {
       });
     } catch {
       const history = clientStorage.getCreditHistory();
+      const user = clientStorage.getUser();
       const newRec: CreditScoreRecord = {
         id: `ch_${Date.now()}`,
-        user_id: clientStorage.getUser()?.id || 'usr_alex',
+        user_id: user?.id || 'usr_default',
         score,
         note: note || 'User recorded score',
         recorded_at: new Date().toISOString(),
       };
       const updatedHistory = [...history, newRec];
-      localStorage.setItem('finhealth_credit_history', JSON.stringify(updatedHistory));
+      clientStorage.setCreditHistory(updatedHistory);
       const profile = clientStorage.getProfile() || defaultAlexProfile;
       const updatedProfile = { ...profile, previous_credit_score: profile.current_credit_score, current_credit_score: score };
       clientStorage.setProfile(updatedProfile);
@@ -320,9 +340,10 @@ export const api = {
       });
     } catch {
       const loans = clientStorage.getLoans();
+      const user = clientStorage.getUser();
       const newLoan: Loan = {
         id: `loan_${Date.now()}`,
-        user_id: clientStorage.getUser()?.id || 'usr_alex',
+        user_id: user?.id || 'usr_default',
         name: loan.name || 'New Loan',
         type: loan.type || 'Personal Loan',
         principal: loan.principal || 100000,
@@ -336,6 +357,23 @@ export const api = {
       };
       const updated = [newLoan, ...loans];
       clientStorage.setLoans(updated);
+
+      // Recalculate profile totals
+      const profile = clientStorage.getProfile();
+      if (profile) {
+        const total_debt = updated.reduce((s, l) => s + (l.remaining_amount || 0), 0);
+        const monthly_emi = updated.reduce((s, l) => s + (l.emi || 0), 0);
+        const total_income = profile.monthly_income + profile.other_income;
+        const dti = total_income > 0 ? Math.round((monthly_emi / total_income) * 100) : 0;
+        clientStorage.setProfile({
+          ...profile,
+          total_debt,
+          monthly_emi,
+          active_loans_count: updated.filter(l => l.status === 'active').length,
+          debt_to_income_ratio: dti
+        });
+      }
+
       return { loan: newLoan };
     }
   },
@@ -364,7 +402,23 @@ export const api = {
       return await request<{ message: string }>(`/loans/${id}`, { method: 'DELETE' });
     } catch {
       const loans = clientStorage.getLoans();
-      clientStorage.setLoans(loans.filter(l => l.id !== id));
+      const filtered = loans.filter(l => l.id !== id);
+      clientStorage.setLoans(filtered);
+
+      const profile = clientStorage.getProfile();
+      if (profile) {
+        const total_debt = filtered.reduce((s, l) => s + (l.remaining_amount || 0), 0);
+        const monthly_emi = filtered.reduce((s, l) => s + (l.emi || 0), 0);
+        const total_income = profile.monthly_income + profile.other_income;
+        const dti = total_income > 0 ? Math.round((monthly_emi / total_income) * 100) : 0;
+        clientStorage.setProfile({
+          ...profile,
+          total_debt,
+          monthly_emi,
+          active_loans_count: filtered.filter(l => l.status === 'active').length,
+          debt_to_income_ratio: dti
+        });
+      }
       return { message: 'Loan deleted successfully' };
     }
   },
@@ -386,9 +440,10 @@ export const api = {
       });
     } catch {
       const payments = clientStorage.getPayments();
+      const user = clientStorage.getUser();
       const newPay: Payment = {
         id: `pay_${Date.now()}`,
-        user_id: clientStorage.getUser()?.id || 'usr_alex',
+        user_id: user?.id || 'usr_default',
         loan_name: payment.loan_name || 'Bill Payment',
         amount: payment.amount || 5000,
         due_date: payment.due_date || new Date().toISOString().split('T')[0],
@@ -396,7 +451,7 @@ export const api = {
         status: payment.status || 'upcoming',
       };
       const updated = [newPay, ...payments];
-      localStorage.setItem('finhealth_payments', JSON.stringify(updated));
+      clientStorage.setPayments(updated);
       return { payment: newPay };
     }
   },
@@ -414,7 +469,7 @@ export const api = {
     } catch {
       const payments = clientStorage.getPayments();
       const updated = payments.map(p => (p.id === id ? { ...p, ...payment } : p));
-      localStorage.setItem('finhealth_payments', JSON.stringify(updated));
+      clientStorage.setPayments(updated);
       const found = updated.find(p => p.id === id) || (payment as Payment);
       return { payment: found };
     }
@@ -437,9 +492,10 @@ export const api = {
       });
     } catch {
       const goals = clientStorage.getGoals();
+      const user = clientStorage.getUser();
       const newGoal: FinancialGoal = {
         id: `goal_${Date.now()}`,
-        user_id: clientStorage.getUser()?.id || 'usr_alex',
+        user_id: user?.id || 'usr_default',
         title: goal.title || 'New Goal',
         target_value: goal.target_value || 100000,
         current_value: goal.current_value || 0,
@@ -448,7 +504,7 @@ export const api = {
         status: goal.status || 'in_progress',
       };
       const updated = [newGoal, ...goals];
-      localStorage.setItem('finhealth_goals', JSON.stringify(updated));
+      clientStorage.setGoals(updated);
       return { goal: newGoal };
     }
   },
@@ -466,7 +522,7 @@ export const api = {
     } catch {
       const goals = clientStorage.getGoals();
       const updated = goals.map(g => (g.id === id ? { ...g, ...goal } : g));
-      localStorage.setItem('finhealth_goals', JSON.stringify(updated));
+      clientStorage.setGoals(updated);
       const found = updated.find(g => g.id === id) || (goal as FinancialGoal);
       return { goal: found };
     }
@@ -477,7 +533,7 @@ export const api = {
       return await request<{ message: string }>(`/goals/${id}`, { method: 'DELETE' });
     } catch {
       const goals = clientStorage.getGoals();
-      localStorage.setItem('finhealth_goals', JSON.stringify(goals.filter(g => g.id !== id)));
+      clientStorage.setGoals(goals.filter(g => g.id !== id));
       return { message: 'Goal deleted' };
     }
   },
@@ -487,28 +543,8 @@ export const api = {
     try {
       return await request<{ recommendations: AIRecommendation[] }>('/recommendations');
     } catch {
-      const profile = clientStorage.getProfile() || defaultAlexProfile;
-      const rec: AIRecommendation = {
-        id: 'rec_1',
-        user_id: 'usr_alex',
-        summary: `With a monthly EMI burden of ₹${profile.monthly_emi || 14500}, prepayment reduces compounding interest and immediately boosts your debt-to-income (DTI) profile.`,
-        health_status: 'Healthy',
-        key_issues: ['Revolving credit card interest', 'Debt concentration in personal loans'],
-        recommendations: [
-          {
-            step: 1,
-            title: 'Accelerate Personal Loan Repayment',
-            description: 'Direct annual bonuses or tax refunds toward principal prepayment to reduce debt load.',
-            impact: '+25 CIBIL Points',
-            priority: 'High'
-          }
-        ],
-        priority: 'High',
-        expected_direction: 'Accelerated debt payoff and credit improvement',
-        disclaimer: 'Educational insights generated by FinHealth AI.',
-        created_at: new Date().toISOString()
-      };
-      return { recommendations: [rec] };
+      const res = await api.getDashboardData();
+      return { recommendations: res.latestRecommendation ? [res.latestRecommendation] : [] };
     }
   },
 
@@ -526,9 +562,10 @@ export const api = {
     try {
       return await request<{ sessions: ChatSession[] }>('/chat/sessions');
     } catch {
+      const user = clientStorage.getUser();
       return {
         sessions: [
-          { id: 'session_default', user_id: 'usr_alex', title: 'Credit Wellness & Debt Strategy', created_at: new Date().toISOString(), updated_at: new Date().toISOString() }
+          { id: 'session_default', user_id: user?.id || 'usr_default', title: 'Credit Wellness & Debt Strategy', created_at: new Date().toISOString(), updated_at: new Date().toISOString() }
         ]
       };
     }
@@ -541,9 +578,10 @@ export const api = {
         body: JSON.stringify({ title }),
       });
     } catch {
+      const user = clientStorage.getUser();
       const sess: ChatSession = {
         id: `sess_${Date.now()}`,
-        user_id: 'usr_alex',
+        user_id: user?.id || 'usr_default',
         title: title || 'Financial Advisory Session',
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
@@ -556,7 +594,8 @@ export const api = {
     try {
       return await request<{ session: ChatSession; messages: ChatMessage[] }>(`/chat/sessions/${id}`);
     } catch {
-      const sess: ChatSession = { id, user_id: 'usr_alex', title: 'Advisory Session', created_at: new Date().toISOString(), updated_at: new Date().toISOString() };
+      const user = clientStorage.getUser();
+      const sess: ChatSession = { id, user_id: user?.id || 'usr_default', title: 'Advisory Session', created_at: new Date().toISOString(), updated_at: new Date().toISOString() };
       return { session: sess, messages: [] };
     }
   },
@@ -576,11 +615,14 @@ export const api = {
         body: JSON.stringify({ message, sessionId }),
       });
     } catch {
+      const user = clientStorage.getUser();
       const profile = clientStorage.getProfile() || defaultAlexProfile;
-      const replyText = `Here is your customized analysis based on your financial indicators (Credit Score: **${profile.current_credit_score}**, Utilization: **${profile.credit_utilization_ratio}%**, DTI: **${profile.debt_to_income_ratio}%**):\n\n` +
-        `• **Immediate Action**: Maintain credit utilization below 20% on all cards to boost your CIBIL score.\n` +
-        `• **Debt Strategy**: Allocate ₹${Math.round(profile.monthly_income * 0.1)} additional monthly prepayment to accelerate debt reduction.\n` +
-        `• **Emergency Safety Net**: Your emergency fund balance is ₹${profile.emergency_fund_balance.toLocaleString('en-IN')}; aim for 6 months of living expenses.`;
+      const userName = user?.name ? user.name.split(' ')[0] : 'there';
+      
+      const replyText = `Hello ${userName}! Here is your personalized analysis based on your current financial metrics (Credit Score: **${profile.current_credit_score}**, Utilization: **${profile.credit_utilization_ratio}%**, DTI: **${profile.debt_to_income_ratio}%**, Monthly Income: **₹${profile.monthly_income.toLocaleString('en-IN')}**):\n\n` +
+        `• **Credit Score Optimization**: Your credit standing is in the **${profile.current_credit_score >= 750 ? 'Prime (750+)' : 'Good'}** range. Maintaining utilization below 20% on all cards prevents unnecessary bureau score dips.\n` +
+        `• **Debt & EMI Strategy**: With a **${profile.debt_to_income_ratio}% DTI**, your debt obligations are **${profile.debt_to_income_ratio <= 35 ? 'healthy and well-balanced' : 'slightly elevated'}**. ${profile.monthly_emi > 0 ? `Your monthly EMI commitment is ₹${profile.monthly_emi.toLocaleString('en-IN')}.` : 'You currently have zero active loan EMIs.'}\n` +
+        `• **Liquid Safety Net**: Your emergency fund balance is **₹${profile.emergency_fund_balance.toLocaleString('en-IN')}** (${Math.round(profile.emergency_fund_balance / Math.max(1, profile.monthly_expenses))} months of essential living expenses).`;
 
       const reply: ChatMessage = {
         id: `msg_${Date.now()}`,
@@ -611,7 +653,7 @@ export const api = {
       return await request<{ success: boolean }>(`/notifications/${id}/read`, { method: 'PUT' });
     } catch {
       const list = clientStorage.getNotifications().map(n => (n.id === id ? { ...n, is_read: true } : n));
-      localStorage.setItem('finhealth_notifications', JSON.stringify(list));
+      clientStorage.setNotifications(list);
       return { success: true };
     }
   },
@@ -621,7 +663,7 @@ export const api = {
       return await request<{ success: boolean }>('/notifications/read-all', { method: 'POST' });
     } catch {
       const list = clientStorage.getNotifications().map(n => ({ ...n, is_read: true }));
-      localStorage.setItem('finhealth_notifications', JSON.stringify(list));
+      clientStorage.setNotifications(list);
       return { success: true };
     }
   },
@@ -633,31 +675,34 @@ export const api = {
     } catch {
       const profile = clientStorage.getProfile() || defaultAlexProfile;
       const history = clientStorage.getCreditHistory();
+      const loans = clientStorage.getLoans();
+
+      const loanPie = loans.length > 0 
+        ? loans.map(l => ({ name: l.name, value: l.remaining_amount || l.principal }))
+        : [{ name: 'Zero Active Loans', value: 1 }];
+
       return {
         profile,
         creditHistory: history,
-        loanPieData: [
-          { name: 'Personal Loan', value: 195000 },
-          { name: 'Vehicle Loan', value: 85000 },
-        ],
+        loanPieData: loanPie,
         debtHistory: [
-          { month: 'Jan', debt: 340000 },
-          { month: 'Feb', debt: 325000 },
-          { month: 'Mar', debt: 310000 },
-          { month: 'Apr', debt: 295000 },
-          { month: 'May', debt: 280000 },
+          { month: 'Jan', debt: Math.round(profile.total_debt * 1.15) },
+          { month: 'Feb', debt: Math.round(profile.total_debt * 1.10) },
+          { month: 'Mar', debt: Math.round(profile.total_debt * 1.05) },
+          { month: 'Apr', debt: Math.round(profile.total_debt * 1.02) },
+          { month: 'May', debt: profile.total_debt },
         ],
         cashflowData: [
           { name: 'Essential', amount: profile.essential_expenses || 26000 },
           { name: 'Discretionary', amount: profile.discretionary_expenses || 12000 },
-          { name: 'Debt EMI', amount: profile.monthly_emi || 14500 },
+          { name: 'Debt EMI', amount: profile.monthly_emi || 0 },
           { name: 'Surplus', amount: Math.max(0, (profile.monthly_income + profile.other_income) - (profile.monthly_expenses + profile.monthly_emi)) },
         ],
         insights: {
-          credit: `Your credit score stands at ${profile.current_credit_score}. Score has increased by ${profile.current_credit_score - profile.previous_credit_score} points over recent records.`,
-          debt: `Your DTI is ${profile.debt_to_income_ratio}%, well below the critical 40% threshold for Indian lending standards.`,
-          savings: `Liquid emergency savings cover ~${Math.round(profile.emergency_fund_balance / (profile.monthly_expenses || 1))} months of monthly expenses.`,
-          action: 'Continue disciplined payment routine and target early repayment on highest interest personal loan.'
+          credit: `Your credit score stands at ${profile.current_credit_score}. Score has moved by ${profile.current_credit_score - profile.previous_credit_score >= 0 ? '+' : ''}${profile.current_credit_score - profile.previous_credit_score} points.`,
+          debt: `Your DTI is ${profile.debt_to_income_ratio}%, ${profile.debt_to_income_ratio <= 35 ? 'well within the safe lending threshold' : 'which requires active monitoring'}.`,
+          savings: `Liquid emergency savings cover ~${Math.round(profile.emergency_fund_balance / Math.max(1, profile.monthly_expenses))} months of monthly expenses.`,
+          action: 'Maintain consistent payment routines and automate EMI payments.'
         }
       };
     }

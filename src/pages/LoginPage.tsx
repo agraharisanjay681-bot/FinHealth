@@ -6,6 +6,7 @@ import { OAuthModal } from '../components/auth/OAuthModal.js';
 import { DisclaimerBanner } from '../components/common/DisclaimerBanner.js';
 import { Logo } from '../components/common/Logo.js';
 import { SocialAuthButtons } from '../components/auth/SocialAuthButtons.js';
+import { clientStorage } from '../services/clientStorage.js';
 
 export const LoginPage: React.FC = () => {
   const { login, demoLogin } = useAuth();
@@ -26,7 +27,12 @@ export const LoginPage: React.FC = () => {
 
     try {
       await login(email, password);
-      navigate('/dashboard');
+      const isDone = clientStorage.isOnboardingDone();
+      if (isDone) {
+        navigate('/dashboard');
+      } else {
+        navigate('/onboarding');
+      }
     } catch (err: any) {
       setError(err.message || 'Invalid email or password');
     } finally {
@@ -96,7 +102,13 @@ export const LoginPage: React.FC = () => {
             <SocialAuthButtons
               mode="signin"
               layout="stacked"
-              onSuccess={() => navigate('/dashboard')}
+              onSuccess={() => {
+                if (clientStorage.isOnboardingDone()) {
+                  navigate('/dashboard');
+                } else {
+                  navigate('/onboarding');
+                }
+              }}
               onError={(msg) => setError(msg)}
             />
 
