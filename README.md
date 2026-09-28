@@ -22,5 +22,7 @@ View your app in AI Studio: https://ai.studio/apps/c8595c69-72dd-42f0-9c15-e8e31
 
 ## 📄 Project Documentation
 
-[👉 View BSFI-Credit Assistant Documentation](https://docs.google.com/gview?embedded=1&url=https://raw.githubusercontent.com/agraharisanjay681-bot/FinHealth/main/Docs/BSFI-Credit%20Assistant%20SSA.docx)
+
+
+👉 [View BSFI-Credit Assistant Documentation](https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fraw.githubusercontent.com%2Fagraharisanjay681-bot%2FFinHealth%2Fmain%2FDocs%2FBSFI-Credit%2520Assistant%2520SSA.docx)
 # FinHealth
