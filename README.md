@@ -19,8 +19,11 @@ View your app in AI Studio: https://ai.studio/apps/c8595c69-72dd-42f0-9c15-e8e31
 3. Run the app:
    `npm run dev`
 
+   ## 📄 Project Documentation
+## 📚 Documentation
 
-## 📄 Project Documentation
+The complete project documentation is available below:
 
-https://docs.google.com/document/d/1ghc4O9UMLmqbhk-g7ivFKAdXzV4TtRqo/edit?usp=sharing&ouid=101908036618330617548&rtpof=true&sd=true
+[📄 View Credit Assistant Documentation](https://docs.google.com/gview?embedded=1&url=https://raw.githubusercontent.com/agraharisanjay681-bot/FinHealth/main/Docs/BSFI-Credit%20Assistant%20SSA.docx)
+
 # FinHealth
