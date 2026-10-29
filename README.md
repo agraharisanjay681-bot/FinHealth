@@ -25,5 +25,4 @@ View your app in AI Studio: https://ai.studio/apps/c8595c69-72dd-42f0-9c15-e8e31
 The complete project documentation is available below:
 
 [📄 View Credit Assistant Documentation](https://docs.google.com/gview?embedded=1&url=https://raw.githubusercontent.com/agraharisanjay681-bot/FinHealth/main/Docs/BSFI-Credit%20Assistant%20SSA.docx)
-
 # FinHealth
