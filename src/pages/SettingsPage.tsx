@@ -11,7 +11,9 @@ import {
   CheckCircle2, 
   AlertCircle,
   Key,
-  ExternalLink
+  ExternalLink,
+  Sparkles,
+  Sliders
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext.js';
 import { useTheme } from '../context/ThemeContext.js';
@@ -21,7 +23,7 @@ import { formatINR } from '../utils/formatters.js';
 
 export const SettingsPage: React.FC = () => {
   const { user, profile, refreshProfile, logout } = useAuth();
-  const { theme, toggleTheme } = useTheme();
+  const { theme, toggleTheme, setTheme, setIsHudOpen } = useTheme();
 
   const [name, setName] = useState(user?.name || '');
   const [age, setAge] = useState(user?.age || profile?.age || 28);
@@ -213,34 +215,56 @@ export const SettingsPage: React.FC = () => {
       </div>
 
       {/* Preferences & Appearance */}
-      <div className="p-6 sm:p-8 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-xs space-y-4">
-        <h3 className="text-base font-bold text-slate-900 dark:text-white">
-          Display & Appearance
-        </h3>
-        <p className="text-xs text-slate-500 dark:text-slate-400">
-          Customize the aesthetic mode of FinHealth across your sessions.
-        </p>
+      <div className="p-6 sm:p-8 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-xs space-y-5">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <h3 className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+              <Sparkles className="w-4 h-4 text-cyan-400" />
+              <span>Interactive Dynamic Themes & Visual FX</span>
+            </h3>
+            <p className="text-xs text-slate-500 dark:text-slate-400">
+              Customize real-time 3D candlestick waveforms, cursor gravity, and color aesthetics.
+            </p>
+          </div>
 
-        <div className="flex items-center justify-between pt-2">
-          <span className="text-xs font-semibold text-slate-700 dark:text-slate-300">
-            Interface Theme: {theme === 'dark' ? 'Dark Mode' : 'Light Mode'}
-          </span>
           <button
-            onClick={toggleTheme}
-            className="px-4 py-2 rounded-xl border border-slate-300 dark:border-slate-700 hover:border-emerald-500 text-xs font-semibold flex items-center gap-2 transition-colors"
+            type="button"
+            onClick={() => setIsHudOpen(true)}
+            className="px-4 py-2 rounded-xl text-xs font-bold text-slate-950 flex items-center gap-1.5 self-start sm:self-auto transition-transform hover:scale-105 active:scale-95 shadow-md"
+            style={{
+              backgroundColor: 'var(--theme-primary, #00f5ff)',
+              boxShadow: '0 0 16px var(--theme-glow, rgba(0,245,255,0.4))'
+            }}
           >
-            {theme === 'dark' ? (
-              <>
-                <Sun className="w-4 h-4 text-amber-400" />
-                <span>Switch to Light</span>
-              </>
-            ) : (
-              <>
-                <Moon className="w-4 h-4 text-indigo-500" />
-                <span>Switch to Dark</span>
-              </>
-            )}
+            <Sliders className="w-3.5 h-3.5" />
+            <span>Open Theme & Wave Studio</span>
           </button>
+        </div>
+
+        {/* Theme cards selector */}
+        <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 pt-2">
+          {[
+            { id: 'quantum' as const, name: 'Quantum Neon', desc: 'Cyan & Purple Wave', icon: '🌌' },
+            { id: 'cyber' as const, name: 'Cyber Emerald', desc: 'Matrix Green Bull', icon: '⚡' },
+            { id: 'solar' as const, name: 'Solar Flare', desc: 'Amber & Crimson', icon: '🔥' },
+            { id: 'dark' as const, name: 'Midnight Stealth', desc: 'Obsidian & Ice Blue', icon: '💎' },
+            { id: 'light' as const, name: 'Aurora Clean', desc: 'Executive Daylight', icon: '☀️' },
+          ].map((item) => (
+            <button
+              key={item.id}
+              type="button"
+              onClick={() => setTheme(item.id)}
+              className={`p-3 rounded-xl border text-left transition-all ${
+                theme === item.id
+                  ? 'border-cyan-400 bg-cyan-500/10 shadow-md ring-1 ring-cyan-400'
+                  : 'border-slate-200 dark:border-slate-800 hover:border-slate-400 dark:hover:border-slate-700 bg-slate-50/50 dark:bg-slate-800/40'
+              }`}
+            >
+              <div className="text-xl mb-1">{item.icon}</div>
+              <div className="text-xs font-bold text-slate-900 dark:text-white">{item.name}</div>
+              <div className="text-[10px] text-slate-500 dark:text-slate-400 line-clamp-1">{item.desc}</div>
+            </button>
+          ))}
         </div>
       </div>
 

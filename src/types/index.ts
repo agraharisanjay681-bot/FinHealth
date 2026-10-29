@@ -144,6 +144,12 @@ export interface ChatMessage {
   created_at: string;
 }
 
+export interface ChatSuggestion {
+  category: string;
+  prompt: string;
+  icon?: string;
+}
+
 export interface Notification {
   id: string;
   user_id: string;

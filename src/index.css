@@ -20,6 +20,7 @@ body {
   padding: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
 }
 
 .font-display {
@@ -27,84 +28,149 @@ body {
 }
 
 /* ==========================================================
-   Cyber Emerald Holographic FinTech Theme
+   FinHealth Dynamic Interactive Theme System
    ========================================================== */
-html.cyber-theme {
-  --cyber-bg: #020c07;
-  --cyber-emerald: #00ff88;
-  --cyber-mint: #10b981;
-  --cyber-teal: #06b6d4;
-  --cyber-glow: rgba(0, 255, 136, 0.4);
+
+/* 1. QUANTUM NEON (Default - Matches user 3D Candlestick Wave Reference) */
+html.theme-quantum {
+  --theme-bg-base: #060818;
+  --theme-primary: #00f5ff;
+  --theme-accent: #8b5cf6;
+  --theme-accent-sec: #3b82f6;
+  --theme-glow: rgba(0, 245, 255, 0.45);
+  --theme-card-bg: rgba(9, 13, 33, 0.78);
+  --theme-card-border: rgba(59, 130, 246, 0.28);
 }
 
-html.cyber-theme body,
-body.cyber-theme,
-.cyber-bg-overlay {
-  background-color: #020c07 !important;
-  background-image: 
-    radial-gradient(ellipse at 50% 0%, rgba(0, 255, 136, 0.28) 0%, rgba(5, 46, 22, 0.25) 40%, transparent 80%),
-    linear-gradient(to bottom, rgba(2, 12, 7, 0.65), rgba(2, 12, 7, 0.92)),
-    url('/cyber-theme-bg.png') !important;
-  background-size: cover !important;
-  background-position: center top !important;
-  background-repeat: no-repeat !important;
-  background-attachment: fixed !important;
+html.theme-quantum body,
+body.theme-quantum {
+  background-color: #060818 !important;
   color: #f1f5f9 !important;
 }
 
-/* Glassmorphism for cards in Cyber theme */
-html.cyber-theme .bg-white,
-html.cyber-theme [class*="bg-white"],
-html.cyber-theme .bg-slate-50,
-html.cyber-theme [class*="bg-slate-50"],
-html.cyber-theme .bg-slate-100,
-html.cyber-theme .dark\:bg-slate-900,
-html.cyber-theme .dark\:bg-slate-950 {
-  background-color: rgba(3, 18, 11, 0.82) !important;
+/* 2. CYBER EMERALD */
+html.theme-cyber,
+html.cyber-theme {
+  --theme-bg-base: #020c07;
+  --theme-primary: #00ff88;
+  --theme-accent: #10b981;
+  --theme-accent-sec: #06b6d4;
+  --theme-glow: rgba(0, 255, 136, 0.4);
+  --theme-card-bg: rgba(3, 18, 11, 0.8);
+  --theme-card-border: rgba(0, 255, 136, 0.25);
+}
+
+html.theme-cyber body,
+html.cyber-theme body {
+  background-color: #020c07 !important;
+  color: #f1f5f9 !important;
+}
+
+/* 3. SOLAR FLARE */
+html.theme-solar {
+  --theme-bg-base: #0c0806;
+  --theme-primary: #f59e0b;
+  --theme-accent: #f43f5e;
+  --theme-accent-sec: #fbbf24;
+  --theme-glow: rgba(245, 158, 11, 0.45);
+  --theme-card-bg: rgba(23, 15, 11, 0.8);
+  --theme-card-border: rgba(245, 158, 11, 0.25);
+}
+
+html.theme-solar body {
+  background-color: #0c0806 !important;
+  color: #fef3c7 !important;
+}
+
+/* 4. MIDNIGHT STEALTH */
+html.theme-dark {
+  --theme-bg-base: #070a12;
+  --theme-primary: #38bdf8;
+  --theme-accent: #818cf8;
+  --theme-accent-sec: #94a3b8;
+  --theme-glow: rgba(56, 189, 248, 0.3);
+  --theme-card-bg: rgba(15, 23, 42, 0.82);
+  --theme-card-border: rgba(56, 189, 248, 0.2);
+}
+
+html.theme-dark body {
+  background-color: #070a12 !important;
+  color: #f1f5f9 !important;
+}
+
+/* 5. AURORA CLEAN LIGHT */
+html.theme-light,
+html.light-theme {
+  --theme-bg-base: #f8fafc;
+  --theme-primary: #0284c7;
+  --theme-accent: #6366f1;
+  --theme-accent-sec: #059669;
+  --theme-glow: rgba(2, 132, 199, 0.2);
+  --theme-card-bg: rgba(255, 255, 255, 0.88);
+  --theme-card-border: rgba(226, 232, 240, 0.85);
+}
+
+html.theme-light body,
+html.light-theme body {
+  background-color: #f8fafc !important;
+  color: #0f172a !important;
+}
+
+/* ==========================================================
+   Universal Glassmorphism for Dark Themes
+   ========================================================== */
+html.dark:not(.theme-light) .bg-white:not([class*="/"]):not([role="dialog"]):not(.hud-element),
+html.dark:not(.theme-light) .bg-slate-50:not([class*="/"]):not([role="dialog"]):not(.hud-element),
+html.dark:not(.theme-light) .bg-slate-100:not([class*="/"]):not([role="dialog"]):not(.hud-element),
+html.dark:not(.theme-light) .dark\:bg-slate-900:not([class*="/"]):not([role="dialog"]):not(.hud-element),
+html.dark:not(.theme-light) .dark\:bg-slate-950:not([class*="/"]):not([role="dialog"]):not(.hud-element) {
+  background-color: var(--theme-card-bg, rgba(9, 13, 33, 0.8)) !important;
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border-color: rgba(0, 255, 136, 0.25) !important;
-  box-shadow: 0 8px 32px 0 rgba(0, 255, 136, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  border-color: var(--theme-card-border, rgba(59, 130, 246, 0.25)) !important;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
-html.cyber-theme header {
-  background-color: rgba(2, 12, 7, 0.9) !important;
-  border-color: rgba(0, 255, 136, 0.3) !important;
-  box-shadow: 0 4px 24px -2px rgba(0, 255, 136, 0.15);
+html.dark:not(.theme-light) header {
+  background-color: var(--theme-card-bg, rgba(6, 8, 24, 0.88)) !important;
+  border-color: var(--theme-card-border, rgba(59, 130, 246, 0.3)) !important;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 4px 24px -2px var(--theme-glow, rgba(0, 245, 255, 0.15));
 }
 
-html.cyber-theme .text-slate-900 {
+html.dark:not(.theme-light) .text-slate-900 {
   color: #ffffff !important;
 }
 
-html.cyber-theme .text-slate-800 {
+html.dark:not(.theme-light) .text-slate-800 {
   color: #f1f5f9 !important;
 }
 
-html.cyber-theme .text-slate-700,
-html.cyber-theme .text-slate-600 {
+html.dark:not(.theme-light) .text-slate-700,
+html.dark:not(.theme-light) .text-slate-600 {
   color: #cbd5e1 !important;
 }
 
-html.cyber-theme .text-slate-500 {
+html.dark:not(.theme-light) .text-slate-500 {
   color: #94a3b8 !important;
 }
 
-html.cyber-theme .border-slate-100,
-html.cyber-theme .border-slate-200,
-html.cyber-theme .border-slate-300,
-html.cyber-theme .border-slate-700,
-html.cyber-theme .border-slate-800 {
-  border-color: rgba(0, 255, 136, 0.2) !important;
+html.dark:not(.theme-light) .border-slate-100,
+html.dark:not(.theme-light) .border-slate-200,
+html.dark:not(.theme-light) .border-slate-300,
+html.dark:not(.theme-light) .border-slate-700,
+html.dark:not(.theme-light) .border-slate-800 {
+  border-color: var(--theme-card-border, rgba(59, 130, 246, 0.2)) !important;
 }
 
-/* Neon Candlestick Glow Effects */
-.neon-glow-emerald {
-  box-shadow: 0 0 20px rgba(0, 255, 136, 0.5), inset 0 0 10px rgba(0, 255, 136, 0.2);
+/* Neon Glow & Interactive Laser Utilities */
+.neon-glow-primary {
+  box-shadow: 0 0 20px var(--theme-glow, rgba(0, 245, 255, 0.5)), inset 0 0 10px rgba(255, 255, 255, 0.1);
 }
 
 .neon-text-glow {
-  text-shadow: 0 0 12px rgba(0, 255, 136, 0.7), 0 0 24px rgba(0, 255, 136, 0.35);
+  text-shadow: 0 0 12px var(--theme-glow, rgba(0, 245, 255, 0.7)), 0 0 24px var(--theme-glow, rgba(0, 245, 255, 0.35));
 }
 
 .candlestick-laser {
@@ -117,7 +183,36 @@ html.cyber-theme .border-slate-800 {
   left: 10%;
   right: 10%;
   height: 1px;
-  background: linear-gradient(90deg, transparent, #00ff88, transparent);
-  box-shadow: 0 0 10px #00ff88;
+  background: linear-gradient(90deg, transparent, var(--theme-primary, #00f5ff), transparent);
+  box-shadow: 0 0 10px var(--theme-primary, #00f5ff);
 }
 
+@keyframes pulse-halo {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scale(1.08);
+    opacity: 0.95;
+  }
+}
+
+.animate-pulse-halo {
+  animation: pulse-halo 3s ease-in-out infinite;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}

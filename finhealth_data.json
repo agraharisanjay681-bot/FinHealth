@@ -17,9 +17,17 @@
       "email": "nikhil@123",
       "password_hash": "$2b$10$nv4MXrdKMrtnnsrw6B9tPesNPA1aPeSwCKYlQfVNRfVO0OxKOCaFa",
       "created_at": "2026-09-15T08:34:44.239Z",
-      "updated_at": "2026-09-15T08:36:36.082Z",
+      "updated_at": "2026-09-20T04:08:45.049Z",
       "age": 28,
-      "employment": "self_employed"
+      "employment": "salaried"
+    },
+    {
+      "id": "usr_google_1789877243387",
+      "name": "Suyash Agrahari",
+      "email": "agraharisanjay681@gmail.com",
+      "password_hash": "$2b$10$0AbcJ8e5VDFeLipuvgIWpuQ4Do9Q7V7e2WYZeuun/RBoIGJcjz2Va",
+      "created_at": "2026-09-20T04:07:23.694Z",
+      "updated_at": "2026-09-20T04:07:23.694Z"
     }
   ],
   "profiles": [
@@ -51,7 +59,7 @@
     {
       "id": "prof_usr_1789461284043",
       "user_id": "usr_1789461284043",
-      "monthly_income": 200000,
+      "monthly_income": 65000,
       "other_income": 10000,
       "monthly_expenses": 32000,
       "essential_expenses": 22000,
@@ -69,9 +77,9 @@
       "savings_balance": 85000,
       "emergency_fund_balance": 45000,
       "financial_health_score": 99,
-      "debt_to_income_ratio": 6,
+      "debt_to_income_ratio": 16,
       "credit_utilization_ratio": 25,
-      "updated_at": "2026-09-15T08:36:36.089Z"
+      "updated_at": "2026-09-20T04:08:45.051Z"
     }
   ],
   "credit_history": [
@@ -115,6 +123,20 @@
       "user_id": "usr_1789461284043",
       "score": 720,
       "recorded_at": "2026-09-15T08:36:36.092Z",
+      "note": "Initial onboarding score"
+    },
+    {
+      "id": "ch_1789877303277",
+      "user_id": "usr_1789461284043",
+      "score": 720,
+      "recorded_at": "2026-09-20T04:08:23.277Z",
+      "note": "Initial onboarding score"
+    },
+    {
+      "id": "ch_1789877325053",
+      "user_id": "usr_1789461284043",
+      "score": 720,
+      "recorded_at": "2026-09-20T04:08:45.053Z",
       "note": "Initial onboarding score"
     }
   ],
@@ -269,9 +291,121 @@
       "target_date": "2027-03-14",
       "status": "in_progress",
       "notes": "Generated during financial onboarding."
+    },
+    {
+      "id": "goal_1789877303278",
+      "user_id": "usr_1789461284043",
+      "title": "Improve Credit Score",
+      "category": "credit_score",
+      "current_value": 720,
+      "target_value": 770,
+      "target_date": "2027-03-19",
+      "status": "in_progress",
+      "notes": "Generated during financial onboarding."
+    },
+    {
+      "id": "goal_1789877325056",
+      "user_id": "usr_1789461284043",
+      "title": "Lower credit card utilization (<20%)",
+      "category": "credit_score",
+      "current_value": 720,
+      "target_value": 770,
+      "target_date": "2027-03-19",
+      "status": "in_progress",
+      "notes": "Generated during financial onboarding."
     }
   ],
   "recommendations": [
+    {
+      "id": "rec_1789877332510",
+      "user_id": "usr_1789461284043",
+      "summary": "Your FinHealth profile shows a healthy foundation with a credit score of 720 and 25% credit utilization.",
+      "health_status": "Excellent",
+      "key_issues": [
+        "Emergency fund of ₹45,000 covers under 3 months of essential living costs."
+      ],
+      "recommendations": [
+        {
+          "step": 1,
+          "title": "Keep Credit Utilization Under 20%",
+          "description": "Pay down balances before statement generation dates or request a credit limit enhancement without spending more.",
+          "impact": "High"
+        },
+        {
+          "step": 2,
+          "title": "Maintain 100% On-Time Payment Discipline",
+          "description": "Enable automated NACH/e-mandate standing instructions for all EMIs and credit card total amounts due.",
+          "impact": "High"
+        },
+        {
+          "step": 3,
+          "title": "Build 3-to-6 Month Emergency Safety Net",
+          "description": "Direct surplus into an instant-access liquid mutual fund or sweep-in fixed deposit to prevent taking high-interest emergency debt.",
+          "impact": "High"
+        },
+        {
+          "step": 4,
+          "title": "Prioritize High-Interest Debt Clearance",
+          "description": "Target highest interest unsecured debts first while paying minimum dues on all other accounts.",
+          "impact": "Medium"
+        },
+        {
+          "step": 5,
+          "title": "Limit Unplanned Hard Credit Inquiries",
+          "description": "Space out any new loan or card applications by at least 6 months to avoid signaling credit hunger to bureaus.",
+          "impact": "Medium"
+        }
+      ],
+      "priority": "Medium",
+      "expected_direction": "Consistent adherence to these disciplined habits may support positive credit trajectory and reduced interest expense over the coming 3 to 6 months.",
+      "disclaimer": "FinHealth provides educational and informational insights and does not replace professional financial advice.",
+      "created_at": "2026-09-20T04:08:52.510Z"
+    },
+    {
+      "id": "rec_1789877308044",
+      "user_id": "usr_1789461284043",
+      "summary": "Your FinHealth profile shows a healthy foundation with a credit score of 720 and 25% credit utilization.",
+      "health_status": "Excellent",
+      "key_issues": [
+        "Emergency fund of ₹45,000 covers under 3 months of essential living costs."
+      ],
+      "recommendations": [
+        {
+          "step": 1,
+          "title": "Keep Credit Utilization Under 20%",
+          "description": "Pay down balances before statement generation dates or request a credit limit enhancement without spending more.",
+          "impact": "High"
+        },
+        {
+          "step": 2,
+          "title": "Maintain 100% On-Time Payment Discipline",
+          "description": "Enable automated NACH/e-mandate standing instructions for all EMIs and credit card total amounts due.",
+          "impact": "High"
+        },
+        {
+          "step": 3,
+          "title": "Build 3-to-6 Month Emergency Safety Net",
+          "description": "Direct surplus into an instant-access liquid mutual fund or sweep-in fixed deposit to prevent taking high-interest emergency debt.",
+          "impact": "High"
+        },
+        {
+          "step": 4,
+          "title": "Prioritize High-Interest Debt Clearance",
+          "description": "Target highest interest unsecured debts first while paying minimum dues on all other accounts.",
+          "impact": "Medium"
+        },
+        {
+          "step": 5,
+          "title": "Limit Unplanned Hard Credit Inquiries",
+          "description": "Space out any new loan or card applications by at least 6 months to avoid signaling credit hunger to bureaus.",
+          "impact": "Medium"
+        }
+      ],
+      "priority": "Medium",
+      "expected_direction": "Consistent adherence to these disciplined habits may support positive credit trajectory and reduced interest expense over the coming 3 to 6 months.",
+      "disclaimer": "FinHealth provides educational and informational insights and does not replace professional financial advice.",
+      "created_at": "2026-09-20T04:08:28.044Z"
+    },
     {
       "id": "rec_1789461396168",
       "user_id": "usr_1789461284043",
@@ -367,6 +501,139 @@
   ],
   "chat_sessions": [
     {
+      "id": "sess_1789883742206",
+      "user_id": "usr_alex_sharma",
+      "title": "Identify my biggest financial ...",
+      "created_at": "2026-09-20T11:25:42.207593",
+      "updated_at": "2026-09-20T11:25:42.207604"
+    },
+    {
+      "id": "sess_1789883304598",
+      "user_id": "usr_alex_sharma",
+      "title": "Analyze my financial health.",
+      "created_at": "2026-09-20T11:18:24.599142",
+      "updated_at": "2026-09-20T11:18:24.599149"
+    },
+    {
+      "id": "sess_1789883304585",
+      "user_id": "usr_alex_sharma",
+      "title": "Why is my utilization high?",
+      "created_at": "2026-09-20T11:18:24.585830",
+      "updated_at": "2026-09-20T11:18:24.585837"
+    },
+    {
+      "id": "sess_1789883304571",
+      "user_id": "usr_alex_sharma",
+      "title": "How can I improve my credit sc...",
+      "created_at": "2026-09-20T11:18:24.571639",
+      "updated_at": "2026-09-20T11:18:24.571647"
+    },
+    {
+      "id": "sess_1789883304553",
+      "user_id": "usr_alex_sharma",
+      "title": "What is DTI?",
+      "created_at": "2026-09-20T11:18:24.553710",
+      "updated_at": "2026-09-20T11:18:24.553720"
+    },
+    {
+      "id": "sess_1789883304533",
+      "user_id": "usr_alex_sharma",
+      "title": "Hello",
+      "created_at": "2026-09-20T11:18:24.534870",
+      "updated_at": "2026-09-20T11:18:24.534883"
+    },
+    {
+      "id": "sess_1789883304518",
+      "user_id": "usr_alex_sharma",
+      "title": "Analyze my financial health.",
+      "created_at": "2026-09-20T11:18:24.519540",
+      "updated_at": "2026-09-20T11:18:24.519553"
+    },
+    {
+      "id": "sess_1789883304488",
+      "user_id": "usr_alex_sharma",
+      "title": "Why is my utilization high?",
+      "created_at": "2026-09-20T11:18:24.489039",
+      "updated_at": "2026-09-20T11:18:24.489051"
+    },
+    {
+      "id": "sess_1789883304476",
+      "user_id": "usr_alex_sharma",
+      "title": "How can I improve my credit sc...",
+      "created_at": "2026-09-20T11:18:24.476876",
+      "updated_at": "2026-09-20T11:18:24.476886"
+    },
+    {
+      "id": "sess_1789883304465",
+      "user_id": "usr_alex_sharma",
+      "title": "What is DTI?",
+      "created_at": "2026-09-20T11:18:24.466177",
+      "updated_at": "2026-09-20T11:18:24.466192"
+    },
+    {
+      "id": "sess_1789883304455",
+      "user_id": "usr_alex_sharma",
+      "title": "Hello",
+      "created_at": "2026-09-20T11:18:24.456121",
+      "updated_at": "2026-09-20T11:18:24.456129"
+    },
+    {
+      "id": "sess_1789883274560",
+      "user_id": "usr_alex_sharma",
+      "title": "Analyze my financial health.",
+      "created_at": "2026-09-20T11:17:54.561906",
+      "updated_at": "2026-09-20T11:17:54.561922"
+    },
+    {
+      "id": "sess_1789883251553",
+      "user_id": "usr_alex_sharma",
+      "title": "Analyze my financial health.",
+      "created_at": "2026-09-20T11:17:31.554447",
+      "updated_at": "2026-09-20T11:17:31.554486"
+    },
+    {
+      "id": "sess_1789883251517",
+      "user_id": "usr_alex_sharma",
+      "title": "Analyze my financial health.",
+      "created_at": "2026-09-20T11:17:31.518066",
+      "updated_at": "2026-09-20T11:17:31.518074"
+    },
+    {
+      "id": "sess_1789882572761",
+      "user_id": "usr_alex_sharma",
+      "title": "Hello FinHealth AI, respond wi...",
+      "created_at": "2026-09-20T11:06:12.762119",
+      "updated_at": "2026-09-20T11:06:12.762134"
+    },
+    {
+      "id": "sess_1789882956388",
+      "user_id": "usr_alex_sharma",
+      "title": "What is my current credit scor...",
+      "created_at": "2026-09-20T05:42:36.388Z",
+      "updated_at": "2026-09-20T05:42:48.387Z"
+    },
+    {
+      "id": "sess_1789878665143",
+      "user_id": "usr_alex_sharma",
+      "title": "What is my biggest financial b...",
+      "created_at": "2026-09-20T04:31:05.143Z",
+      "updated_at": "2026-09-20T04:31:24.772Z"
+    },
+    {
+      "id": "sess_1789877428006",
+      "user_id": "usr_1789461284043",
+      "title": "gold rate today...",
+      "created_at": "2026-09-20T04:10:28.006Z",
+      "updated_at": "2026-09-20T04:10:33.478Z"
+    },
+    {
+      "id": "sess_1789877403515",
+      "user_id": "usr_1789461284043",
+      "title": "gold rate...",
+      "created_at": "2026-09-20T04:10:03.515Z",
+      "updated_at": "2026-09-20T04:10:07.785Z"
+    },
+    {
       "id": "sess_1",
       "user_id": "usr_alex_sharma",
       "title": "Credit Score & EMI Planning",
@@ -388,9 +655,356 @@
       "sender": "assistant",
       "message": "Based on your current FinHealth profile:\n\n• **CIBIL/Credit Score**: 742 (Good) — you have improved by 12 points since April.\n• **Credit Utilization**: 28% (₹42,000 of ₹1,50,000 limit), which is in the healthy zone under the 30% guideline.\n• **Debt-to-Income (DTI)**: ~17% with ₹14,500 monthly EMI against ₹85,000 total income, well within safe parameters.\n• **Overall FinHealth Score**: 78/100 (Healthy).\n\nYour primary opportunity is bolstering your emergency reserve (currently ₹65,000) towards 3 to 6 months of expenses (~₹1.5L–₹2L).",
       "created_at": "2025-05-15T16:00:10.000Z"
+    },
+    {
+      "id": "msg_u_1789877403518",
+      "session_id": "sess_1789877403515",
+      "sender": "user",
+      "message": "gold rate",
+      "created_at": "2026-09-20T04:10:03.518Z"
+    },
+    {
+      "id": "msg_a_1789877407785",
+      "session_id": "sess_1789877403515",
+      "sender": "assistant",
+      "message": "Thank you for asking! In the Indian financial ecosystem, balanced money management rests on three pillars: **on-time EMI payments**, **keeping credit card utilization under 30%**, and **building a 3-6 month liquid emergency fund**.\n\nCurrently, your credit score is **720** and your utilization is **25%**.\n\nFeel free to ask me anything specific about your loans, DTI ratio, debt repayment strategies (Snowball vs Avalanche), or how to plan for an upcoming loan!",
+      "created_at": "2026-09-20T04:10:07.785Z"
+    },
+    {
+      "id": "msg_u_1789877428008",
+      "session_id": "sess_1789877428006",
+      "sender": "user",
+      "message": "gold rate today",
+      "created_at": "2026-09-20T04:10:28.008Z"
+    },
+    {
+      "id": "msg_a_1789877433478",
+      "session_id": "sess_1789877428006",
+      "sender": "assistant",
+      "message": "Hello Nikhil,\n\nBecause live bullion and commodity prices fluctuate throughout trading hours, I cannot provide the second-by-second live spot price. However, here is what you need to know about checking and calculating gold rates today in India:\n\n---\n\n### **Where to Check Official Live Rates**\n* **IBJA (India Bullion and Jewellers Association):** The official benchmark rate across India (updated twice daily, morning and evening, excluding weekends). Visit [ibja.co](https://www.ibja.co).\n* **MCX (Multi Commodity Exchange):** For real-time gold futures trading prices.\n* **Financial Portals & Trusted Jewellers:** Websites such as *Moneycontrol*, *The Economic Times*, or major jewellers like *Tanishq* or *Malabar Gold* display live city-wise retail rates.\n\n---\n\n### **Key Things to Keep in Mind When Buying Gold**\n\n1. **Purity (Karat):**\n   * **24 Karat (99.9% pure):** Standard for gold bars, coins, and investment instruments.\n   * **22 Karat (91.6% pure / 916 Hallmark):** The most common standard for jewellery, alloyed with other metals for durability.\n   * **18 Karat (75.0% pure):** Often used for diamond-studded jewellery.\n\n2. **Taxes & Hidden Costs:**\n   * **GST:** A flat **3% GST** is levied on the value of gold plus making charges.\n   * **Making Charges:** Typically range from **8% to 25%**, depending on the design and jeweller.\n   * **Hallmarking:** Always look for the **6-digit HUID (Hallmark Unique Identification)** code to verify purity.\n\n3. **City Variations:**\n   * Rates vary slightly (typically by ₹100–₹500 per 10 grams) between cities such as Mumbai, Delhi, Bengaluru, and Chennai due to local transportation costs and state levies.\n\n---\n\n### **Looking at Gold as an Investment?**\nIf your goal is financial investment rather than physical jewellery, consider options that eliminate making charges and storage risks:\n* **Gold ETFs or Gold Mutual Funds:** Highly liquid and track domestic physical gold prices directly.\n* **Sovereign Gold Bonds (SGBs) via secondary market:** Backed by the RBI, offering potential tax exemptions on maturity and an annual interest payout (though fresh primary tranches have been limited recently).\n\n*Disclaimer: Gold prices are market-linked and subject to change. Always verify the latest rate and HUID hallmarking with certified jewellers or official platforms before transacting.*",
+      "created_at": "2026-09-20T04:10:33.478Z"
+    },
+    {
+      "id": "msg_u_1789878665148",
+      "session_id": "sess_1789878665143",
+      "sender": "user",
+      "message": "What is my biggest financial bottleneck and how can I fix it?",
+      "created_at": "2026-09-20T04:31:05.148Z"
+    },
+    {
+      "id": "msg_a_1789878684772",
+      "session_id": "sess_1789878665143",
+      "sender": "assistant",
+      "message": "Hello Alex! You are in a **very strong overall financial position**. With an internal Wellness Score of **78/100**, a healthy Debt-to-Income (DTI) ratio of **17%**, and zero missed payments in the last 24 months, your financial baseline is solid. \n\nHowever, looking closely at your numbers, there is a clear **primary bottleneck** holding you back from crossing the **775+ CIBIL threshold** and reaching total financial resilience.\n\n---\n\n### 📌 Bottleneck Identified: Liquidity Misallocation & Cushion Vulnerability\n\nWhile your cash flow is healthy (net monthly surplus of **₹32,500**), your money is currently working in silos rather than as a team:\n\n1. **Underfunded Emergency Buffer (1.7 Months Cushion):**\n   Your current Emergency Fund stands at **₹65,000**, which covers only ~1.7 months of essential expenses (Target: **₹2,00,000** for 6 months). If an unexpected life event occurs, you risk falling back on high-cost credit.\n2. **Idle Savings vs. Low-Hanging Debt:**\n   You hold **₹1,10,000** in regular savings, while carrying an **SBI Two-Wheeler Loan balance of ₹43,000** (₹5,000/month EMI) and **₹42,000 in Credit Card balances**. \n3. **CIBIL Score Drag (1 Recent Late Payment):**\n   Your **742 CIBIL score** is good, but the **1 late payment** in your 24-month history combined with a **28% credit card utilization** keeps you just below the 750+ \"prime tier\" where banks offer the best interest rates.\n\n---\n\n### 🚀 Recommended Action Plan: Fix It in 4 Steps\n\nHere is your tactical step-by-step roadmap to eliminate this bottleneck using your existing cash resources:\n\n#### **Step 1: Execute a Quick-Win Prepayment (SBI Bike Loan)**\n* **Action:** Use **₹43,000** from your **₹1,10,000** general savings to pay off the SBI Two-Wheeler loan in full today.\n* **Why:** This immediately achieves one of your major goals, closes 1 active loan account, and frees up **₹5,000/month in cash flow**.\n* **Remaining Savings:** ₹67,000.\n\n#### **Step 2: Clear Credit Card Balance Before Statement Date**\n* **Action:** Pay off your entire **₹42,000** credit card balance using your remaining savings.\n* **Why:** Even though 28% utilization is considered healthy (<30%), paying your balance off before the statement generation date reduces your reported utilization closer to **5–10%**. This is one of the fastest signals to credit bureaus that you manage revolving credit conservatively.\n* **Remaining Savings:** ₹25,000.\n\n#### **Step 3: Supercharge Your Emergency Shield**\n* **Action:** Transfer the remaining **₹25,000** from general savings directly into your dedicated Emergency Fund.\n  * **New Emergency Fund Balance:** **₹90,000** (up from ₹65,000).\n* **Action:** Redirect your new total monthly surplus (**₹37,500** = original ₹32,500 surplus + freed ₹5,000 EMI) exclusively toward your Emergency Fund.\n* **Why:** In just **3 months**, your Emergency Fund will hit **₹2,02,500**, fully achieving your 6-month safety net goal!\n\n#### **Step 4: Automate to Guard Against Late Payments**\n* **Action:** Set up **NACH (Auto-Debit) mandates** or standing instructions for your remaining HDFC Personal Loan EMI (₹9,500) and credit cards (paying full balance automatically).\n* **Why:** The single late payment on your record will lose its negative impact as time passes, provided no new late marks occur over the next 3 to 6 billing cycles.\n\n---\n\n### 📊 Expected Impact Summary\n\n| Metric | Current Status | Projected Status (3–6 Months) |\n| :--- | :--- | :--- |\n| **Active Loans** | 2 Loans + 2 CCs | **1 Loan (HDFC PL) + 2 CCs** |\n| **Monthly EMIs** | ₹14,500 | **₹9,500** (Freed up ₹5,000/mo) |\n| **Emergency Buffer** | ₹65,000 (~1.7 mos) | **₹2,00,000+ (6 Full Months)** |\n| **Credit Card Utilization** | 28% | **< 10%** |\n| **CIBIL Score Trajectory** | 742 (Good) | **On track toward 775+** |\n\n*Note: Credit score updates depend on how bureaus (CIBIL/Experian) process monthly reporting from lenders. Consistent, timely payments and lower utilization typically strengthen your credit profile within 3 to 6 billing cycles.*",
+      "created_at": "2026-09-20T04:31:24.772Z"
+    },
+    {
+      "id": "msg_u_1789882956390",
+      "session_id": "sess_1789882956388",
+      "sender": "user",
+      "message": "What is my current credit score, credit utilization, and what is my biggest bottleneck?",
+      "created_at": "2026-09-20T05:42:36.390Z"
+    },
+    {
+      "id": "msg_a_1789882968387",
+      "session_id": "sess_1789882956388",
+      "sender": "assistant",
+      "message": "Hello Alex! Great to connect with you. You are in a solid overall financial position, but there are a few specific areas keeping you from reaching your target **775+ CIBIL score** and achieving total financial security.\n\nHere is a direct summary of your current numbers and a breakdown of what is holding you back.\n\n---\n\n### 📊 Your Financial Snapshot\n\n*   **Current CIBIL Score:** **742 / 900** (*Category: Good*)\n*   **Credit Utilization Ratio:** **28%** (*₹42,000 balance out of ₹1,50,000 total limit*)\n*   **Debt-to-Income (DTI) Ratio:** **17%** (*Healthy – ₹14,500 total EMI on ₹85,000 total monthly income*)\n\n> **Note on Credit Utilization:** Staying under 30% is generally considered healthy by Indian credit bureaus like CIBIL and Experian. You are currently at **28%**, which is good, but optimizing it further under **10–15%** can help boost your score closer to your 775+ target.\n\n---\n\n### 🚨 **Bottleneck Identified: What Is Holding You Back?**\n\nLooking at your overall profile, your biggest financial bottleneck is a **2-part vulnerability**:\n\n#### 1. Primary Vulnerability: Underfunded Emergency Buffer (1.7 Months)\n*   **The Issue:** You currently have **₹65,000** in your emergency fund against total monthly expenses of **₹38,000**. This covers only **1.7 months** of living costs (your target is 6 months / ₹2,00,000).\n*   **Why it Matters:** If an unexpected expense or income disruption occurs, you may be forced to rely on credit cards or miss an EMI, which directly threatens your credit health.\n\n#### 2. Credit Score Drag: 1 Late Payment in the Last 24 Months\n*   **The Issue:** Payment history accounts for **~35% of your CIBIL score calculation**. That single late payment recorded in the past 24 months is currently acting as a speed bump preventing your score from crossing the **775+ threshold**.\n\n---\n\n### 🚀 **Recommended Action Plan**\n\nTo eliminate these bottlenecks and steadily move toward your goals, here is a structured step-by-step strategy:\n\n1. **Automate 100% of Payments via NACH / Auto-Debit:**\n   * Ensure auto-debit (NACH mandates) is set up for both your **HDFC Personal Loan (₹9,500 EMI)** and **SBI Two-Wheeler Loan (₹5,000 EMI)** at least 2–3 days before the due date. A clean 12–24 month streak of on-time payments will gradually dilute the impact of that past late payment.\n\n2. **Lower Statement Utilization Below 15%:**\n   * Instead of waiting for the bill generation date, pay off ₹20,000–₹25,000 of your credit card balance **2 to 3 days before the statement date**. This ensures the credit bureau receives a reported utilization ratio of ~10-12%, which signals excellent credit management.\n\n3. **Redirect Surplus Cash Flow to Build Your Emergency Fund:**\n   * Your total in-hand income is **₹85,000** (₹75k primary + ₹10k extra) and total monthly outflows are **₹52,500** (₹38k expenses + ₹14.5k EMIs).\n   * You have a healthy monthly surplus of **~₹32,500**. Allocate **₹20,000/month** specifically to your Emergency Fund until you hit your ₹2,00,000 target (~6-7 months).\n\n---\n\n### 📈 **Expected Impact**\n\n*   **Credit Health:** Maintaining 100% on-time payments and keeping reported credit card utilization low typically helps strengthen credit profiles over **3 to 6 billing cycles**.\n*   **Financial Resilience:** Fully funding your 6-month buffer will protect you from ever needing high-interest credit card debt or risking a missed loan payment during emergencies.",
+      "created_at": "2026-09-20T05:42:48.387Z"
+    },
+    {
+      "id": "msg_u_1789882572762",
+      "session_id": "sess_1789882572761",
+      "sender": "user",
+      "message": "Hello FinHealth AI, respond with OK.",
+      "created_at": "2026-09-20T11:06:12.762159"
+    },
+    {
+      "id": "msg_u_1789883251518",
+      "session_id": "sess_1789883251517",
+      "sender": "user",
+      "message": "Analyze my financial health.",
+      "created_at": "2026-09-20T11:17:31.518092"
+    },
+    {
+      "id": "msg_u_1789883251554",
+      "session_id": "sess_1789883251553",
+      "sender": "user",
+      "message": "Analyze my financial health.",
+      "created_at": "2026-09-20T11:17:31.554513"
+    },
+    {
+      "id": "msg_u_1789883274561",
+      "session_id": "sess_1789883274560",
+      "sender": "user",
+      "message": "Analyze my financial health.",
+      "created_at": "2026-09-20T11:17:54.561951"
+    },
+    {
+      "id": "msg_u_1789883304456",
+      "session_id": "sess_1789883304455",
+      "sender": "user",
+      "message": "Hello",
+      "created_at": "2026-09-20T11:18:24.456141"
+    },
+    {
+      "id": "msg_u_1789883304466",
+      "session_id": "sess_1789883304465",
+      "sender": "user",
+      "message": "What is DTI?",
+      "created_at": "2026-09-20T11:18:24.466214"
+    },
+    {
+      "id": "msg_u_1789883304476",
+      "session_id": "sess_1789883304476",
+      "sender": "user",
+      "message": "How can I improve my credit score?",
+      "created_at": "2026-09-20T11:18:24.476904"
+    },
+    {
+      "id": "msg_u_1789883304489",
+      "session_id": "sess_1789883304488",
+      "sender": "user",
+      "message": "Why is my utilization high?",
+      "created_at": "2026-09-20T11:18:24.489068"
+    },
+    {
+      "id": "msg_u_1789883304519",
+      "session_id": "sess_1789883304518",
+      "sender": "user",
+      "message": "Analyze my financial health.",
+      "created_at": "2026-09-20T11:18:24.519572"
+    },
+    {
+      "id": "msg_u_1789883304534",
+      "session_id": "sess_1789883304533",
+      "sender": "user",
+      "message": "Hello",
+      "created_at": "2026-09-20T11:18:24.534905"
+    },
+    {
+      "id": "msg_u_1789883304553",
+      "session_id": "sess_1789883304553",
+      "sender": "user",
+      "message": "What is DTI?",
+      "created_at": "2026-09-20T11:18:24.553738"
+    },
+    {
+      "id": "msg_u_1789883304571",
+      "session_id": "sess_1789883304571",
+      "sender": "user",
+      "message": "How can I improve my credit score?",
+      "created_at": "2026-09-20T11:18:24.571660"
+    },
+    {
+      "id": "msg_u_1789883304585",
+      "session_id": "sess_1789883304585",
+      "sender": "user",
+      "message": "Why is my utilization high?",
+      "created_at": "2026-09-20T11:18:24.585848"
+    },
+    {
+      "id": "msg_u_1789883304599",
+      "session_id": "sess_1789883304598",
+      "sender": "user",
+      "message": "Analyze my financial health.",
+      "created_at": "2026-09-20T11:18:24.599161"
+    },
+    {
+      "id": "msg_u_1789883742207",
+      "session_id": "sess_1789883742206",
+      "sender": "user",
+      "message": "Identify my biggest financial bottlenecks and provide an actionable plan.",
+      "created_at": "2026-09-20T11:25:42.207623"
+    },
+    {
+      "id": "msg_u_1789903594769",
+      "session_id": "sess_1789903594768",
+      "sender": "user",
+      "message": "Identify my biggest financial bottlenecks and provide an actionable plan.",
+      "created_at": "2026-09-20T11:26:34.769Z"
+    },
+    {
+      "id": "msg_a_1789903596304",
+      "session_id": "sess_1789903594768",
+      "sender": "assistant",
+      "message": "Sorry, I couldn't process that right now. Please try again.",
+      "created_at": "2026-09-20T11:26:36.304Z"
+    },
+    {
+      "id": "msg_u_1789913147524",
+      "session_id": "sess_1789913147521",
+      "sender": "user",
+      "message": "Identify my biggest financial bottlenecks and provide an actionable plan.",
+      "created_at": "2026-09-20T14:05:47.524Z"
+    },
+    {
+      "id": "msg_a_1789913164412",
+      "session_id": "sess_1789913147521",
+      "sender": "assistant",
+      "message": "### 🔍 Financial Bottleneck Diagnosis for Alex\n\nBased on your live profile metrics, here is the breakdown of your financial bottlenecks:\n\n1. **Underfunded Emergency Safety Net (1.7 months)**: Your emergency fund balance of ₹65,000 covers under 3 months of essential living expenses (₹1,14,000). An unexpected financial emergency could force reliance on high-interest debt.\n\n2. **Elevated Credit Utilization (28%)**: Your credit card balance of ₹42,000 consumes 28% of your ₹1,50,000 limit, which depresses credit bureau scores.\n\n3. **Past Payment Irregularity**: 1 late payment(s) in the last 24 months is currently dragging down your CIBIL score from crossing the 750+ Prime threshold.\n\n### 🛠️ Recommended Action Plan\n\n• **Step 1:** **Build Liquid Emergency Shield**: Direct ₹10,000–₹15,000/month from your surplus cash flow into an instant-access liquid mutual fund or auto-sweep fixed deposit.\n• **Step 2:** **Pre-Statement Balance Paydown**: Pay off credit card balances **2 to 3 days before your monthly billing statement generation date** rather than on the due date.\n• **Step 3:** **100% Payment Automation**: Set up automated NACH e-mandate standing instructions for every active loan EMI and credit card total amount due.\n\n### 📈 Expected Impact\n\n* **Credit Score Growth:** Maintaining 100% on-time payments and single-digit statement utilization typically strengthens credit scores over **3 to 6 billing cycles**.\n* **Financial Resilience:** Expanding your emergency fund to 6 months provides a sturdy safety cushion against unforeseen shocks.",
+      "created_at": "2026-09-20T14:06:04.412Z"
+    },
+    {
+      "id": "msg_u_1789913470304",
+      "session_id": "sess_1789913470304",
+      "sender": "user",
+      "message": "what is the stock price of tata",
+      "created_at": "2026-09-20T14:11:10.304Z"
+    },
+    {
+      "id": "msg_a_1789913477283",
+      "session_id": "sess_1789913470304",
+      "sender": "assistant",
+      "message": "Hello Alex! I'm **FinHealth AI**, analyzing your real-time financial metrics.\n\nHere is a quick snapshot of your health:\n• **CIBIL Score**: **742 / 900**\n• **Credit Utilization**: **28%**\n• **DTI Ratio**: **17%**\n• **Emergency Fund**: **1.7 months**\n\nHow can I assist you today? You can ask me:\n• *\"What are my biggest financial bottlenecks?\"*\n• *\"How do I raise my credit score above 780?\"*\n• *\"Should I prepay my personal loan or invest?\"*\n• *\"How does my emergency fund compare to benchmarks?\"*",
+      "created_at": "2026-09-20T14:11:17.283Z"
+    },
+    {
+      "id": "msg_u_1789914052385",
+      "session_id": "sess_1789914052383",
+      "sender": "user",
+      "message": "what is stock price of tata",
+      "created_at": "2026-09-20T14:20:52.385Z"
+    },
+    {
+      "id": "msg_a_1789914070393",
+      "session_id": "sess_1789914052383",
+      "sender": "assistant",
+      "message": "### 📈 Stock Market & Equity Guidance\n\nAs **FinHealth AI**, my primary expertise is in personal credit health intelligence, debt reduction, and budget optimization. I do not provide live streaming intraday ticker feeds for real-time stock prices (such as Tata Motors, Tata Steel, TCS, or Reliance).\n\n**Where to track live prices:**\n• **Live Market Platforms**: View real-time NSE/BSE quotes on **Google Finance**, **Moneycontrol**, **Groww**, or **Zerodha Kite**.\n\n**💡 Financial Health Perspective for Alex:**\nBefore allocating capital into individual equities or volatile market assets:\n1. **Emergency Safety Cushion**: Ensure your emergency fund covers at least 3–6 months of essential living expenses (currently: **₹65,000**).\n2. **Credit Optimization**: Keep credit card utilization below 20% (currently **28%**) to maintain upward momentum on your **742 CIBIL score**.\n3. **Diversified Core**: For long-term compounding, consider systematic SIPs into diversified broad-market Index Funds (Nifty 50) rather than concentrated individual stock holdings.",
+      "created_at": "2026-09-20T14:21:10.393Z"
+    },
+    {
+      "id": "msg_u_1789914861669",
+      "session_id": "sess_1789914861669",
+      "sender": "user",
+      "message": "What is stock price of Tesla?",
+      "created_at": "2026-09-20T14:34:21.669Z"
+    },
+    {
+      "id": "msg_a_1789914862996",
+      "session_id": "sess_1789914861669",
+      "sender": "assistant",
+      "message": "### 📈 Real-Time Market Data Notice\n\nI do not have access to live intraday streaming market feeds for real-time stock prices (such as Tesla, Tata Motors, or Apple).\n\n**Where to check live prices:**\n• **Global & US Equities (Tesla / TSLA)**: Real-time quotes are available on **Google Finance**, **Yahoo Finance**, or **NASDAQ**.\n• **Indian Equities (NSE/BSE)**: Track real-time prices on **Google Finance**, **Moneycontrol**, **Groww**, or **Zerodha Kite**.\n\nLet me know if you would like guidance on budgeting for investments, building your emergency safety net, or long-term financial planning!",
+      "created_at": "2026-09-20T14:34:22.996Z"
+    },
+    {
+      "id": "msg_u_1789914870745",
+      "session_id": "sess_1789914870745",
+      "sender": "user",
+      "message": "What is stock price of Tesla?",
+      "created_at": "2026-09-20T14:34:30.745Z"
+    },
+    {
+      "id": "msg_a_1789914872034",
+      "session_id": "sess_1789914870745",
+      "sender": "assistant",
+      "message": "### 📈 Real-Time Market Data Notice\n\nI do not have access to live intraday streaming market feeds for real-time stock prices (such as Tesla, Tata Motors, or Apple).\n\n**Where to check live prices:**\n• **Global & US Equities (Tesla / TSLA)**: Real-time quotes are available on **Google Finance**, **Yahoo Finance**, or **NASDAQ**.\n• **Indian Equities (NSE/BSE)**: Track real-time prices on **Google Finance**, **Moneycontrol**, **Groww**, or **Zerodha Kite**.\n\nLet me know if you would like guidance on budgeting for investments, building your emergency safety net, or long-term financial planning!",
+      "created_at": "2026-09-20T14:34:32.034Z"
+    },
+    {
+      "id": "msg_u_1789914872055",
+      "session_id": "sess_1789914872055",
+      "sender": "user",
+      "message": "What is DTI?",
+      "created_at": "2026-09-20T14:34:32.055Z"
+    },
+    {
+      "id": "msg_a_1789914873289",
+      "session_id": "sess_1789914872055",
+      "sender": "assistant",
+      "message": "### ⚖️ Debt-to-Income (DTI) Ratio Explained\n\n**Debt-to-Income (DTI) Ratio** is a key financial metric measuring the percentage of your gross monthly income that goes toward paying fixed debt obligations (such as home loans, personal loans, and credit card minimum dues).\n\n**Calculation Formula:**\n$$\\text{DTI} = \\left( \\frac{\\text{Total Monthly Debt Payments}}{\\text{Gross Monthly Income}} \\right) \\times 100$$\n\n**Lending Benchmarks:**\n• **Under 35% (Healthy)**: Excellent balance; lenders view you as low risk with strong repayment capacity.\n• **36% – 45% (Moderate)**: Manageable, but large new loans may face extra underwriting checks.\n• **Over 45% (High Risk)**: High repayment risk; difficult to secure competitive interest rates.\n\nKeeping DTI low ensures you have surplus cash flow for savings, investments, and emergencies.",
+      "created_at": "2026-09-20T14:34:33.289Z"
+    },
+    {
+      "id": "msg_u_1789914873300",
+      "session_id": "sess_1789914873300",
+      "sender": "user",
+      "message": "How can I improve my credit score?",
+      "created_at": "2026-09-20T14:34:33.300Z"
+    },
+    {
+      "id": "msg_a_1789914874580",
+      "session_id": "sess_1789914873300",
+      "sender": "assistant",
+      "message": "### 🚀 Action Plan to Improve Your Credit Score\n\nYour current credit score is **742 / 900**.\n\n**Top Action Steps:**\n1. **Keep Credit Card Utilization Under 20%**: Pay balances before statement generation to report low balances to CIBIL & Experian.\n2. **100% On-Time Payments**: Enable automated NACH e-mandates for all loans and card bills.\n3. **Protect Credit Age**: Avoid closing your oldest credit card accounts.\n4. **Limit Hard Inquiries**: Space out new loan and credit card applications by at least 6 months.\n5. **Balanced Credit Mix**: Maintain a healthy balance of secured and unsecured credit lines over time.",
+      "created_at": "2026-09-20T14:34:34.580Z"
+    },
+    {
+      "id": "msg_u_1789914874591",
+      "session_id": "sess_1789914874591",
+      "sender": "user",
+      "message": "Why is my utilization high?",
+      "created_at": "2026-09-20T14:34:34.591Z"
+    },
+    {
+      "id": "msg_a_1789914875931",
+      "session_id": "sess_1789914874591",
+      "sender": "assistant",
+      "message": "### 💳 Why Credit Utilization Is Elevated\n\nCredit utilization measures the portion of your total credit card limit currently in use.\n\n**Your Current Figures:**\n• **Card Balance:** ₹42,000\n• **Total Limit:** ₹1,50,000\n• **Current Utilization:** **28%** (Moderate)\n\n**Common reasons utilization appears high:**\n1. **Statement Generation Timing**: Credit bureaus capture the balance on your monthly billing statement date, not your payment due date.\n2. **Low Credit Limits**: Carrying regular expenses on cards with smaller credit limits increases the percentage.\n\n**How to Lower It Fast:**\n• **Pre-Statement Paydown**: Pay off balances **2 to 3 days before your statement generation date**.\n• **Request Limit Increase**: Ask your bank for a credit limit enhancement without increasing spending.",
+      "created_at": "2026-09-20T14:34:35.931Z"
+    },
+    {
+      "id": "msg_u_1789914875939",
+      "session_id": "sess_1789914875939",
+      "sender": "user",
+      "message": "What is an emergency fund?",
+      "created_at": "2026-09-20T14:34:35.939Z"
+    },
+    {
+      "id": "msg_a_1789914877228",
+      "session_id": "sess_1789914875939",
+      "sender": "assistant",
+      "message": "### 🛡️ Emergency Fund Explained\n\nAn **Emergency Fund** is a dedicated cash reserve set aside strictly for unexpected emergencies — such as medical crises, sudden vehicle repairs, or temporary loss of income.\n\n**Key Guidelines:**\n• **Target Size**: 3 to 6 months of essential living expenses (rent, utilities, groceries, insurance, mandatory EMIs).\n• **Ideal Vehicles**: High-liquidity, capital-safe accounts such as High-Yield Savings Accounts, Auto-Sweep FDs, or Liquid Mutual Funds.\n• **Core Purpose**: Prevents you from liquidating long-term investments or taking high-cost loans during financial shocks.",
+      "created_at": "2026-09-20T14:34:37.228Z"
+    },
+    {
+      "id": "msg_u_1789914877238",
+      "session_id": "sess_1789914877238",
+      "sender": "user",
+      "message": "Hello",
+      "created_at": "2026-09-20T14:34:37.238Z"
+    },
+    {
+      "id": "msg_a_1789914878576",
+      "session_id": "sess_1789914877238",
+      "sender": "assistant",
+      "message": "Hello Alex! 👋 How can I help you today with your financial health, credit score, debt management, or budget planning?",
+      "created_at": "2026-09-20T14:34:38.576Z"
+    },
+    {
+      "id": "msg_u_1789914878586",
+      "session_id": "sess_1789914878586",
+      "sender": "user",
+      "message": "Analyze my financial health.",
+      "created_at": "2026-09-20T14:34:38.586Z"
+    },
+    {
+      "id": "msg_a_1789914879871",
+      "session_id": "sess_1789914878586",
+      "sender": "assistant",
+      "message": "### 📊 Personalized FinHealth Analysis for Alex\n\n**Profile Snapshot:**\n• **Credit Score:** **742 / 900**\n• **Credit Utilization:** **28%**\n• **Debt-to-Income (DTI):** **17%**\n• **Emergency Fund:** **₹65,000** (~1.7 months)\n\n### 🔍 Key Bottlenecks Identified\n\n1. **Emergency Fund Reserve (1.7 months)**: Your emergency fund balance of ₹65,000 covers under 3 months of essential living expenses (₹1,14,000).\n\n2. **Credit Card Utilization (28%)**: Your credit card balance of ₹42,000 consumes 28% of your ₹1,50,000 limit.\n\n3. **Past Payment Irregularity**: 1 late payment(s) recorded in the past 24 months.\n\n### 🛠️ Recommended Action Plan\n\n• **Step 1:** **Build Liquid Shield**: Allocate ₹10,000–₹15,000/month from cash flow into an instant-access liquid fund or auto-sweep FD.\n• **Step 2:** **Pre-Statement Paydown**: Pay off card balances 2 to 3 days before your monthly billing statement date.\n• **Step 3:** **Automate Standing Instructions**: Set up 100% automated NACH mandates for all loan EMIs.",
+      "created_at": "2026-09-20T14:34:39.871Z"
     }
   ],
   "notifications": [
+    {
+      "id": "notif_1789877325057",
+      "user_id": "usr_1789461284043",
+      "title": "Welcome to FinHealth!",
+      "message": "Your financial profile has been analyzed. Check your dashboard for actionable credit insights.",
+      "type": "success",
+      "is_read": false,
+      "created_at": "2026-09-20T04:08:45.057Z"
+    },
+    {
+      "id": "notif_1789877303280",
+      "user_id": "usr_1789461284043",
+      "title": "Welcome to FinHealth!",
+      "message": "Your financial profile has been analyzed. Check your dashboard for actionable credit insights.",
+      "type": "success",
+      "is_read": false,
+      "created_at": "2026-09-20T04:08:23.280Z"
+    },
     {
       "id": "notif_1789461396104",
       "user_id": "usr_1789461284043",

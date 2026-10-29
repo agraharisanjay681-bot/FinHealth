@@ -18,7 +18,8 @@ import {
   Bot,
   CheckCircle,
   Settings,
-  Zap
+  Zap,
+  Sliders
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext.js';
 import { useTheme } from '../../context/ThemeContext.js';
@@ -28,7 +29,7 @@ import type { Notification } from '../../types/index.js';
 
 export const Navbar: React.FC = () => {
   const { user, isAuthenticated, logout } = useAuth();
-  const { theme, toggleTheme, setTheme } = useTheme();
+  const { theme, toggleTheme, setTheme, setIsHudOpen } = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -109,49 +110,97 @@ export const Navbar: React.FC = () => {
 
           {/* Right Controls */}
           <div className="flex items-center gap-2.5">
-            {/* Theme Switcher Pill */}
-            <div className="flex items-center rounded-full bg-slate-100 dark:bg-slate-800/80 p-0.5 border border-slate-200 dark:border-slate-700/80">
-              <button
-                id="theme-cyber-btn"
-                type="button"
-                onClick={() => setTheme('cyber')}
-                title="Cyber Matrix Holographic Theme"
-                className={`flex items-center gap-1 px-2 py-1 rounded-full text-[10px] font-bold transition-all ${
-                  theme === 'cyber'
-                    ? 'bg-emerald-500 text-slate-950 shadow-xs shadow-emerald-500/50'
-                    : 'text-slate-500 hover:text-emerald-400'
-                }`}
-              >
-                <Zap className="w-3 h-3" />
-                <span className="hidden sm:inline">Cyber</span>
-              </button>
-              
-              <button
-                id="theme-dark-btn"
-                type="button"
-                onClick={() => setTheme('dark')}
-                title="Deep Dark Theme"
-                className={`p-1 rounded-full text-[10px] transition-all ${
-                  theme === 'dark'
-                    ? 'bg-slate-700 text-white shadow-xs'
-                    : 'text-slate-500 hover:text-slate-300'
-                }`}
-              >
-                <Moon className="w-3 h-3" />
-              </button>
+            {/* Dynamic Theme Switcher Pill & Studio Launcher */}
+            <div className="flex items-center gap-1.5">
+              <div className="flex items-center rounded-full bg-slate-900/60 p-0.5 border border-white/10 backdrop-blur-md shadow-xs">
+                {/* Quantum (User reference aesthetic) */}
+                <button
+                  id="theme-quantum-btn"
+                  type="button"
+                  onClick={() => setTheme('quantum')}
+                  title="Quantum Neon (Cyan & Purple 3D Wave Dynamics)"
+                  className={`flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold transition-all ${
+                    theme === 'quantum'
+                      ? 'bg-gradient-to-r from-cyan-400 to-purple-500 text-slate-950 shadow-md font-extrabold'
+                      : 'text-slate-400 hover:text-cyan-300'
+                  }`}
+                >
+                  <Sparkles className="w-3 h-3" />
+                  <span className="hidden sm:inline">Quantum</span>
+                </button>
 
+                {/* Cyber Emerald */}
+                <button
+                  id="theme-cyber-btn"
+                  type="button"
+                  onClick={() => setTheme('cyber')}
+                  title="Cyber Emerald Matrix Theme"
+                  className={`flex items-center gap-1 px-2 py-1 rounded-full text-[10px] font-bold transition-all ${
+                    theme === 'cyber'
+                      ? 'bg-emerald-400 text-slate-950 shadow-xs'
+                      : 'text-slate-400 hover:text-emerald-300'
+                  }`}
+                >
+                  <Zap className="w-3 h-3" />
+                  <span className="hidden md:inline">Cyber</span>
+                </button>
+
+                {/* Solar Flare */}
+                <button
+                  id="theme-solar-btn"
+                  type="button"
+                  onClick={() => setTheme('solar')}
+                  title="Solar Flare Amber Theme"
+                  className={`p-1 px-1.5 rounded-full text-[10px] font-bold transition-all ${
+                    theme === 'solar'
+                      ? 'bg-amber-400 text-slate-950 shadow-xs'
+                      : 'text-slate-400 hover:text-amber-300'
+                  }`}
+                >
+                  <span className="text-xs">🔥</span>
+                </button>
+
+                {/* Midnight Stealth */}
+                <button
+                  id="theme-dark-btn"
+                  type="button"
+                  onClick={() => setTheme('dark')}
+                  title="Midnight Stealth Dark Theme"
+                  className={`p-1 rounded-full text-[10px] transition-all ${
+                    theme === 'dark'
+                      ? 'bg-sky-500 text-white shadow-xs'
+                      : 'text-slate-400 hover:text-slate-200'
+                  }`}
+                >
+                  <Moon className="w-3 h-3" />
+                </button>
+
+                {/* Clean Light */}
+                <button
+                  id="theme-light-btn"
+                  type="button"
+                  onClick={() => setTheme('light')}
+                  title="Aurora Clean Light Theme"
+                  className={`p-1 rounded-full text-[10px] transition-all ${
+                    theme === 'light'
+                      ? 'bg-white text-amber-500 shadow-xs'
+                      : 'text-slate-400 hover:text-amber-400'
+                  }`}
+                >
+                  <Sun className="w-3 h-3" />
+                </button>
+              </div>
+
+              {/* Quick FX Studio Modal Trigger */}
               <button
-                id="theme-light-btn"
+                id="navbar-fx-studio-btn"
                 type="button"
-                onClick={() => setTheme('light')}
-                title="Clean Light Theme"
-                className={`p-1 rounded-full text-[10px] transition-all ${
-                  theme === 'light'
-                    ? 'bg-white text-amber-500 shadow-xs'
-                    : 'text-slate-500 hover:text-slate-700'
-                }`}
+                onClick={() => setIsHudOpen(true)}
+                title="Open Theme & Wave Physics Studio"
+                className="hidden sm:flex items-center gap-1 px-2 py-1 rounded-full text-[10px] font-bold border border-cyan-500/30 bg-cyan-950/40 text-cyan-300 hover:bg-cyan-500/20 hover:border-cyan-400 transition-all hover:scale-105 active:scale-95"
               >
-                <Sun className="w-3 h-3" />
+                <Sliders className="w-3 h-3 text-cyan-400" />
+                <span>FX</span>
               </button>
             </div>
 

@@ -1,0 +1,16 @@
+.git/
+.firebase/
+.env
+.env.*
+node_modules/
+dist/
+finhealth_data.json
+README.md
+metadata.json
+firebase.json
+.firebaserc
+*.lock
+backend_fastapi/
+Docs/
+alfredo news/
+*.pyc

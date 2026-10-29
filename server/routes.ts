@@ -1,4 +1,4 @@
-import { Router, Response } from 'express';
+import { Router, Request, Response } from 'express';
 import { db } from './db.js';
 import { 
   hashPassword, 
@@ -589,13 +589,15 @@ apiRouter.post('/recommendations/generate', authenticateToken, async (req: Authe
   const userId = req.userId!;
   const profile = db.getProfileByUserId(userId);
   const user = db.getUserById(userId);
+  const loans = db.getLoans(userId);
+  const goals = db.getGoals(userId);
 
   if (!profile) {
     return res.status(400).json({ error: 'Please complete your financial profile first.' });
   }
 
   try {
-    const analysis = await generateAdvisorRecommendation(profile, user?.name || 'User');
+    const analysis = await generateAdvisorRecommendation(profile, user?.name || 'User', loans, goals);
     const newRec = db.addRecommendation({
       id: `rec_${Date.now()}`,
       user_id: userId,
@@ -611,7 +613,7 @@ apiRouter.post('/recommendations/generate', authenticateToken, async (req: Authe
 });
 
 // ----------------------------------------------------
-// AI Chatbot (Sessions & Messaging)
+// AI Chatbot (Sessions, Suggestions & Messaging)
 // ----------------------------------------------------
 apiRouter.get('/chat/sessions', authenticateToken, (req: AuthenticatedRequest, res: Response) => {
   const sessions = db.getChatSessions(req.userId!);
@@ -647,69 +649,175 @@ apiRouter.delete('/chat/sessions/:id', authenticateToken, (req: AuthenticatedReq
   res.json({ message: 'Session deleted successfully' });
 });
 
-apiRouter.post('/chat', authenticateToken, async (req: AuthenticatedRequest, res: Response) => {
-  const { message, sessionId } = req.body;
+// Dynamic contextual prompt suggestions tailored to user profile
+apiRouter.get('/chat/suggestions', authenticateToken, (req: AuthenticatedRequest, res: Response) => {
+  const userId = req.userId!;
+  const profile = db.getProfileByUserId(userId);
+  const loans = db.getLoans(userId);
+
+  const suggestions: { category: string; prompt: string; icon?: string }[] = [];
+
+  if (profile) {
+    if (profile.credit_utilization_ratio > 20) {
+      suggestions.push({
+        category: 'Credit Utilization',
+        prompt: `How can I lower my ${profile.credit_utilization_ratio}% credit utilization to boost my CIBIL score?`,
+      });
+    }
+    if (profile.debt_to_income_ratio > 30) {
+      suggestions.push({
+        category: 'DTI Analysis',
+        prompt: `My DTI is ${profile.debt_to_income_ratio}%. How does this impact my loan eligibility in India?`,
+      });
+    }
+    if (profile.emergency_fund_balance < profile.monthly_expenses * 3) {
+      suggestions.push({
+        category: 'Emergency Safety Net',
+        prompt: `What is the fastest way to build my emergency fund to cover 6 months of expenses?`,
+      });
+    }
+    if (loans.length > 0) {
+      suggestions.push({
+        category: 'Debt Strategy',
+        prompt: `Should I prepay my ${loans[0].name} (EMI ₹${loans[0].emi.toLocaleString('en-IN')}) or invest?`,
+      });
+    }
+    suggestions.push({
+      category: 'Bottlenecks',
+      prompt: `Identify my biggest financial bottlenecks and provide an actionable improvement plan.`,
+    });
+    suggestions.push({
+      category: 'Score Roadmap',
+      prompt: `What are the exact steps to raise my score from ${profile.current_credit_score} to 780+?`,
+    });
+  } else {
+    suggestions.push(
+      { category: 'Overview', prompt: 'How does credit scoring work in India (CIBIL vs Experian)?' },
+      { category: 'DTI Ratio', prompt: 'What is an ideal Debt-to-Income (DTI) ratio for a home loan?' },
+      { category: 'Credit Repair', prompt: 'How do late payments affect credit score and how to recover?' }
+    );
+  }
+
+  res.json({ suggestions: suggestions.slice(0, 6) });
+});
+
+// Test OpenAI connection endpoint
+apiRouter.get('/chat/test', async (_req: Request, res: Response) => {
+  const fastApiUrl = process.env.FASTAPI_URL || 'http://127.0.0.1:8000';
+  try {
+    const fastApiResponse = await fetch(`${fastApiUrl}/api/chat/test`, {
+      method: 'GET',
+      signal: AbortSignal.timeout(15000),
+    });
+    const fastApiData = await fastApiResponse.json();
+    return res.status(fastApiResponse.status).json(fastApiData);
+  } catch (err: any) {
+    return res.status(502).json({
+      success: false,
+      error: 'OpenAI API request failed',
+      detail: `FastAPI backend unreachable at ${fastApiUrl}: ${err.message}`
+    });
+  }
+});
+
+apiRouter.post('/chat', async (req: Request, res: Response) => {
+  const { message, sessionId, conversation_id } = req.body;
+
+  console.log("USER QUESTION:", message);
 
   if (!message || !message.trim()) {
     return res.status(400).json({ error: 'Message cannot be empty.' });
   }
 
-  const userId = req.userId!;
-  const user = db.getUserById(userId);
-  const profile = db.getProfileByUserId(userId);
+  const effectiveSessionId = sessionId || conversation_id || `sess_${Date.now()}`;
 
-  // Ensure valid session
-  let currentSessionId = sessionId;
-  if (!currentSessionId) {
-    const newSession = db.createChatSession({
-      id: `sess_${Date.now()}`,
-      user_id: userId,
-      title: message.slice(0, 30) + '...',
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
-    });
-    currentSessionId = newSession.id;
+  // Try to authenticate user from token if available
+  let user: any = null;
+  let profile: any = null;
+  let loans: any[] = [];
+  let goals: any[] = [];
+  let history: { sender: 'user' | 'assistant'; message: string }[] = [];
+
+  const authHeader = req.headers['authorization'];
+  if (authHeader && authHeader.startsWith('Bearer ')) {
+    const token = authHeader.substring(7);
+    try {
+      const jwt = await import('jsonwebtoken');
+      const decoded = jwt.default.verify(token, process.env.JWT_SECRET || 'finhealth-secure-jwt-secret-key-prod-2025') as any;
+      if (decoded?.id) {
+        user = db.getUserById(decoded.id);
+        profile = db.getProfileByUserId(decoded.id);
+        loans = db.getLoans(decoded.id);
+        goals = db.getGoals(decoded.id);
+      }
+    } catch {
+      // Token verification failed or expired, proceed with demo profile if available
+    }
+  }
+
+  if (!profile) {
+    const defaultUser = db.getUserByEmail('alex.sharma@example.com');
+    if (defaultUser) {
+      user = user || defaultUser;
+      profile = db.getProfileByUserId(defaultUser.id);
+      loans = db.getLoans(defaultUser.id);
+      goals = db.getGoals(defaultUser.id);
+    }
+  }
+
+  // Get chat history
+  try {
+    history = db.getChatMessages(effectiveSessionId).map(m => ({
+      sender: m.sender,
+      message: m.message,
+    }));
+  } catch {
+    history = [];
   }
 
   // Save user message
-  const userMsg = db.addChatMessage({
-    id: `msg_u_${Date.now()}`,
-    session_id: currentSessionId,
-    sender: 'user',
-    message: message.trim(),
-    created_at: new Date().toISOString(),
-  });
-
-  // Get previous messages for conversation context
-  const history = db.getChatMessages(currentSessionId).map(m => ({
-    sender: m.sender,
-    message: m.message
-  }));
+  try {
+    db.addChatMessage({
+      id: `msg_u_${Date.now()}`,
+      session_id: effectiveSessionId,
+      sender: 'user',
+      message: message.trim(),
+      created_at: new Date().toISOString(),
+    });
+  } catch {}
 
   try {
     const aiReplyText = await generateChatResponse(
       message.trim(),
       profile,
-      user?.name || 'User',
-      history
+      user?.name || 'Alex Sharma',
+      history,
+      loans,
+      goals
     );
 
-    const assistantMsg = db.addChatMessage({
+    const assistantMsg = {
       id: `msg_a_${Date.now()}`,
-      session_id: currentSessionId,
-      sender: 'assistant',
+      session_id: effectiveSessionId,
+      sender: 'assistant' as const,
       message: aiReplyText,
       created_at: new Date().toISOString(),
-    });
+    };
 
-    res.json({
+    try {
+      db.addChatMessage(assistantMsg);
+    } catch {}
+
+    return res.json({
       reply: assistantMsg,
-      sessionId: currentSessionId,
+      response: aiReplyText,
+      sessionId: effectiveSessionId,
+      conversation_id: effectiveSessionId,
       disclaimer: 'FinHealth AI provides educational financial insights based on the information you provide. It is not a substitute for professional financial advice.'
     });
-  } catch (err) {
+  } catch (err: any) {
     console.error('Chat generation error:', err);
-    res.status(500).json({ error: 'Failed to process chat response' });
+    return res.status(500).json({ error: 'Failed to process chat response' });
   }
 });
 
